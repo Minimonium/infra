@@ -1,0 +1,66 @@
+version: '3.4'
+
+services:
+  prometheus:
+    image: "prom/prometheus:latest"
+    command: "--config.file=/prometheus.yaml --storage.tsdb.path /data"
+    volumes:
+      - "prometheus_data:/data"
+    configs:
+      - prometheus.yaml
+    networks:
+      - infra_network
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.port: 9090
+        traefik.frontend.rule: "Host:admin.prometheus.${INFRA_DOMAIN}"
+  grafana:
+    image: "grafana/grafana:latest"
+    environment:
+      GF_PATHS_CONFIG: "/grafana.ini"
+    configs:
+      - grafana.ini
+    volumes:
+      - "grafana_data:/data"
+      - "grafana_logs:/var/log/grafana"
+      - "grafana_config:/etc/grafana"
+    networks:
+      - infra_network
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.port: 3000
+        traefik.frontend.rule: "Host:admin.grafana.${INFRA_DOMAIN}"
+
+volumes:
+  prometheus_data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/prometheus"
+  grafana_data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/grafana/data"
+  grafana_logs:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/grafana/logs"
+  grafana_config:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/grafana/config"
+
+configs:
+  prometheus.yaml:
+    file: "${INFRA_DIR}/config/prometheus.yaml"
+  grafana.ini:
+    file: "${INFRA_DIR}/config/grafana.ini"

@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  dnsmasq:
+    image: andyshinn/dnsmasq
+    ports:
+      - "53:53/udp"
+    volumes:
+      - ${INFRA_DIR}/configs/dnsmasq.conf:/etc/dnsmasq.conf:ro
+      - dns_logs:/var/log
+    networks:
+      - infra_network
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+
+networks:
+  infra_network:
+    external: true
+
+volumes:
+  dns_logs:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/dns/logs"

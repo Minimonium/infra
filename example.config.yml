@@ -1,0 +1,18 @@
+domain: infra.local
+ip: 192.168.0.150
+
+dns: yes
+
+fs:
+  user: vagrant
+  server: 10.10.10.10
+  port: 22
+  root: /data
+
+machines:
+  linux:
+    cpus: 2
+    memory: 4096
+  # windows:
+  #   cpus: 2
+  #   memory: 4096

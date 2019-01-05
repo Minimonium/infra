@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+  traefik:
+    image: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik_logs:/var/log/traefik/
+    configs:
+      - source: ".htpasswd"
+        target: "/etc/traefik/.htpasswd"
+      - source: "traefik.toml"
+        target: "/etc/traefik/traefik.toml"
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: 
+          - node.platform.os == linux
+          - node.role == manager
+      labels:
+        traefik.enable: "true"
+        traefik.port: 8080
+        traefik.frontend.auth.basic.removeHeader: "true"
+        traefik.frontend.auth.basic.usersFile: "/etc/traefik/.htpasswd"
+        traefik.frontend.rule: "Host:admin.traefik.${INFRA_DOMAIN}"
+
+volumes:
+  traefik_logs:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/traefik/logs"
+
+configs:
+  .htpasswd:
+    file: "${INFRA_DIR}/config/.htpasswd"
+  traefik.toml:
+    file: "${INFRA_DIR}/config/traefik.toml"

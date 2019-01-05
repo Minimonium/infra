@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-cpp-ce:latest
+    volumes:
+      - artifactory_data:/var/opt/jfrog/artifactory
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: 
+          - node.platform.os == linux
+      labels:
+        traefik.enable: "true"
+        traefik.port: 8081
+        traefik.frontend.rule: "Host:artifactory.${INFRA_DOMAIN}"
+
+volumes:
+  artifactory_data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/artifactory/data"
+    

@@ -1,0 +1,7 @@
+.vagrant/
+.ssh/
+.vscode/
+
+config.yml
+.htpasswd
+gitlab.rb

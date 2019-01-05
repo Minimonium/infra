@@ -1,0 +1,83 @@
+version: '3.4'
+
+services:
+  gitlab:
+    image: "gitlab/gitlab-ce:latest"
+    volumes:
+      - "gitlab_data:/var/opt/gitlab"
+      - "gitlab_logs:/var/log/gitlab"
+      - "gitlab_config:/etc/gitlab"
+    ports:
+      - "8022:8022"
+    configs:
+      - source: "gitlab.rb"
+        target: "/etc/gitlab/gitlab.rb"
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: 
+          - node.platform.os == linux
+          # Since we need the 22 port and traefik doesn't support non HTTP traffic we set the gitlab on the role
+          - node.role == manager
+      labels:
+        traefik.enable: "true"
+        traefik.port: 80
+        traefik.frontend.rule: "Host:gitlab.${INFRA_DOMAIN}"
+  redis:
+    image: "redis:alpine"
+    networks:
+      - infra_network
+    volumes:
+      - "redis_data:/data"
+  postgres:
+    image: "postgres:alpine"
+    networks:
+      - infra_network
+    volumes:
+      - "postgres_data:/data"
+    environment:
+      POSTGRES_USER: gitlab
+      POSTGRES_PASSWORD: gitlab
+      PGDATA: /data
+      POSTGRES_DB: gitlab
+
+volumes:
+  gitlab_data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/gitlab/data"
+  gitlab_logs:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/gitlab/logs"
+  gitlab_config:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/gitlab/config"
+  redis_data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: :${INFRA_FS_ROOT}/redis
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: :${INFRA_FS_ROOT}/postgres
+
+configs:
+  gitlab.rb:
+    file: "${INFRA_DIR}/config/gitlab.rb"

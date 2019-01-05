@@ -1,0 +1,21 @@
+logLevel = "DEBUG"
+[traefikLog]
+filePath = "/var/log/traefik/traefik.log"
+[accessLog]
+filePath = "/var/log/traefik/access.log"
+
+defaultEntryPoints = ["http"]
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+
+[api]
+address = ":8080"
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "${INFRA_DOMAIN}"
+network = "infra_network"
+exposedByDefault = false
+watch = true
+swarmMode = true
