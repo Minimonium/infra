@@ -59,8 +59,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
 
         if infra["optional"]["fs"]
-            manager.vm.provision "shell" do |s|
-                s.path = "infra/base/scripts/prepare-the-fs.sh"
+            manager.vm.provision "fs", type: "shell" do |s|
+                s.path = "infra/fs/deploy.sh"
                 s.privileged = true
             end
         end
