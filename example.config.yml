@@ -1,13 +1,13 @@
 domain: infra.local
 ip: 192.168.0.150
 
-dns: yes
+optional:
+  dns: yes
+  fs: yes
 
 fs:
-  user: vagrant
   server: 10.10.10.10
-  port: 22
-  root: /data
+  root: /infra-swarm
 
 machines:
   linux:
