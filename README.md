@@ -16,7 +16,7 @@ Consists of:
 ## Usage
 
 * Configurate the project via `config.yml`, check the `example.config.yml` for reference.
-* Put ssh keys to the `infra/secrets` subfolder, probably you would want to separate FS keys with Vagrant keys.
+* Put ssh keys to the `.ssh` subfolder for secure Vagrant ssh keys
 * Configure `example.htpasswd` into `.htpasswd` for admin services auth.
 * Configure `example.gitlab.rb` into `gitlab.rb`.
 
