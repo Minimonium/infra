@@ -10,6 +10,9 @@ find ${INFRA_DIR} -type f | xargs sed -i 's/\r$//'
 echo "infra: Installing Docker..."
 source ${INFRA_DIR}/scripts/docker-install.sh
 
+echo "infra: Installing Docker Compose..."
+source ${INFRA_DIR}/scripts/docker-compose-install.sh
+
 echo "infra: Initializating the Swarm..."
 source ${INFRA_DIR}/scripts/docker-swarm-init.sh
 

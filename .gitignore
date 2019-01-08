@@ -2,6 +2,8 @@
 .ssh/
 .vscode/
 
+backup
+
 config.yml
 .htpasswd
 gitlab.rb

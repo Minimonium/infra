@@ -65,17 +65,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             end
         end
 
+        core_env = {
+            "INFRA_WORKDIR" => "/vagrant/infra/services/core",
+
+            "INFRA_IP" => "#{infra["ip"]}",
+            "INFRA_DOMAIN" => "#{infra["domain"]}",
+
+            "INFRA_FS_SERVER" => "#{infra["fs"]["server"]}",
+            "INFRA_FS_ROOT" => "#{infra["fs"]["root"]}"
+        }
         manager.vm.provision "core", type: "shell" do |s|
             s.path = "infra/services/core/deploy.sh"
-            s.env = {
-                "INFRA_WORKDIR" => "/vagrant/infra/services/core",
-
-                "INFRA_IP" => "#{infra["ip"]}",
-                "INFRA_DOMAIN" => "#{infra["domain"]}",
-
-                "INFRA_FS_SERVER" => "#{infra["fs"]["server"]}",
-                "INFRA_FS_ROOT" => "#{infra["fs"]["root"]}"
-            }
+            s.env = core_env
+            s.privileged = true
+        end
+        manager.vm.provision "core-restore", type: "shell", run: "never" do |s|
+            s.path = "infra/services/core/restore.sh"
+            s.env = core_env
+            s.privileged = true
+        end
+        manager.vm.provision "core-backup", type: "shell", run: "never" do |s|
+            s.path = "infra/services/core/backup.sh"
+            s.env = core_env
             s.privileged = true
         end
 
