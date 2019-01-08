@@ -20,6 +20,31 @@ Consists of:
 * Configure `example.htpasswd` into `.htpasswd` for admin services auth.
 * Configure `example.gitlab.rb` into `gitlab.rb`.
 
+For the basic infratructure deployment use:
+
+```bash
+vagrant up
+```
+
+To fix potential problems when deploying one can run provision again with:
+
+```bash
+vagrant provision --provision-with=core
+vagrant provision --provision-with=dns
+```
+
+To restore stuff from backups run:
+
+```bash
+vagrant provision --provision-with=core-restore
+```
+
+To backup stuff run:
+
+```bash
+vagrant provision --provision-with=core-backup
+```
+
 ## Problems
 
 * Kubernetes [Pretty complex, need to look into it later]
