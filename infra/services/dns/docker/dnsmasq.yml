@@ -6,7 +6,7 @@ services:
     ports:
       - "53:53/udp"
     volumes:
-      - ${INFRA_DIR}/configs/dnsmasq.conf:/etc/dnsmasq.conf:ro
+      - ${INFRA_DIR}/config/dnsmasq.conf:/etc/dnsmasq.conf:ro
       - dns_logs:/var/log
     networks:
       - infra_network
