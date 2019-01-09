@@ -10,7 +10,7 @@ mkdir -p /srv/infra-swarm/portainer/data && \
 mkdir -p /srv/infra-swarm/artifactory/data && \
 mkdir -p /srv/infra-swarm/gitlab/{common_data,data,logs,config} && \
 mkdir -p /srv/infra-swarm/gitlab/data/{backup,disk0} && \
-cp -r /vagrant/backup/*gitlab_backup.tar /srv/infra-swarm/gitlab/data/backup && \
+(cp -r /vagrant/backup/*gitlab_backup.tar /srv/infra-swarm/gitlab/data/backup | true) && \
 mkdir -p /srv/infra-swarm/postgres && \
 mkdir -p /srv/infra-swarm/redis && \
 mkdir -p /srv/infra-swarm/prometheus && \
