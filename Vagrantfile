@@ -107,7 +107,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
 
         if infra["optional"]["dns"]
-            config.vm.network :forwarded_port,
+            manager.vm.network :forwarded_port,
                 guest: 53, host: 53, protocol: "udp"
 
             manager.vm.provision "dns", type: "shell" do |s|
