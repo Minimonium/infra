@@ -90,6 +90,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             s.privileged = true
         end
 
+        manager.vm.provision "ci", type: "shell", run: "never" do |s|
+            s.path = "infra/services/ci/deploy.sh"
+            s.env = {
+                "INFRA_WORKDIR" => "/vagrant/infra/services/ci",
+
+                "INFRA_IP" => "#{infra["ip"]}",
+                "INFRA_DOMAIN" => "#{infra["domain"]}",
+
+                "INFRA_GITLAB_RUNNER_TOKEN" => "#{infra["services"]["gitlab-runner"]["token"]}",
+
+                "INFRA_FS_SERVER" => "#{infra["fs"]["server"]}",
+                "INFRA_FS_ROOT" => "#{infra["fs"]["root"]}"
+            }
+            s.privileged = true
+        end
+
         if infra["optional"]["dns"]
             config.vm.network :forwarded_port,
                 guest: 53, host: 53, protocol: "udp"

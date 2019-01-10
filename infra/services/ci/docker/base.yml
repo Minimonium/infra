@@ -1,0 +1,17 @@
+version: '3.4'
+
+networks:
+  infra_network:
+    external: true
+
+volumes:
+  gitlab_runner_home:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":${INFRA_FS_ROOT}/gitlab-runner/home"
+
+configs:
+  config.toml:
+    file: "${INFRA_DIR}/config/config.toml"

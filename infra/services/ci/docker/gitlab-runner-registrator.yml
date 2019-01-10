@@ -1,0 +1,57 @@
+version: '3.4'
+
+# docker run --rm -t -i -v /path/to/config:/etc/gitlab-runner --name gitlab-runner gitlab/gitlab-runner register \
+#   --non-interactive \
+#   --executor "docker" \
+#   --docker-image alpine:3 \
+#   --url "https://gitlab.com/" \
+#   --registration-token "PROJECT_REGISTRATION_TOKEN" \
+#   --description "docker-runner" \
+#   --tag-list "docker,aws" \
+#   --run-untagged \
+#   --locked="false"
+
+# entrypoint: /bin/sh -c
+# command: "/usr/bin/dumb-init /entrypoint register
+#   --non-interactive
+#   --url http://gitlab.${domain.domain}
+#   --registration-token ${domain.gitlab.runner.token}
+#   --executor docker
+#   --docker-image alpine:3
+#   --description docker-runner
+#   --tag-list docker,linux
+#   --run-untagged
+#   --locked=false
+#   && /usr/bin/dumb-init /entrypoint run
+#   --user=gitlab-runner
+#   --working-directory=/home/gitlab-runner"
+
+services:
+  gitlab_runner_registrator:
+    image: gitlab/gitlab-runner:alpine
+    command: ["register",
+      "--non-interactive",
+      "--url", "http://gitlab.${INFRA_DOMAIN}",
+      "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
+      "--executor", "docker",
+      "--docker-image", "alpine:3",
+      "--description", "docker-runner",
+      "--tag-list", "docker,linux",
+      "--run-untagged",
+      "--locked=false"]
+    volumes:
+      - gitlab_runner_home:/home/gitlab-runner
+    configs:
+      - source: "config.toml"
+        target: "/etc/gitlab-runner/config.toml"
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints: 
+          - node.platform.os == linux
+

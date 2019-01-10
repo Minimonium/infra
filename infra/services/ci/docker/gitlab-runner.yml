@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:    
+  gitlab_runner:
+    image: gitlab/gitlab-runner:alpine
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitlab_runner_home:/home/gitlab-runner
+    configs:
+      - source: "config.toml"
+        target: "/etc/gitlab-runner/config.toml"
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: 
+          - node.platform.os == linux
