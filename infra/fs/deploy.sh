@@ -8,7 +8,7 @@ mkdir -p /srv/infra-swarm/dns/logs && \
 mkdir -p /srv/infra-swarm/traefik/logs && \
 mkdir -p /srv/infra-swarm/portainer/data && \
 mkdir -p /srv/infra-swarm/artifactory/data && \
-mkdir -p /srv/infra-swarm/gitlab-runner/home && \
+mkdir -p /srv/infra-swarm/gitlab-runner/{lin,win} && \
 mkdir -p /srv/infra-swarm/gitlab/{common_data,data,logs,config} && \
 mkdir -p /srv/infra-swarm/gitlab/data/{backup,disk0} && \
 (cp -r /vagrant/backup/*gitlab_backup.tar /srv/infra-swarm/gitlab/data/backup | true) && \

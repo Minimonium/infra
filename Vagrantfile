@@ -131,13 +131,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.vm.define "worker" do |worker|
             machine = infra["machines"]["windows"]
 
-            worker.vm.hostname = "azure-dragon"
+            worker.vm.hostname = "divine-mother"
 
             worker.vm.box = "StefanScherer/windows_2019_docker"
             worker.vm.communicator = "winrm"
 
             worker.vm.provider "virtualbox" do |vb|
-                vb.name = "azure-dragon"
+                vb.name = "divine-mother"
                 vb.gui = false
 
                 vb.cpus = machine["cpus"]

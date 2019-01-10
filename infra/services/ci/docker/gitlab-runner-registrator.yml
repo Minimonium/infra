@@ -40,7 +40,7 @@ services:
       "--run-untagged",
       "--locked=false"]
     volumes:
-      - gitlab_runner_home:/home/gitlab-runner
+      - gitlab_runner_lin:/home/gitlab-runner
     configs:
       - source: "config.toml"
         target: "/etc/gitlab-runner/config.toml"
