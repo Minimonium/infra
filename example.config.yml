@@ -9,6 +9,10 @@ fs:
   server: 10.10.10.10
   root: /infra-swarm
 
+services:
+  gitlab-runner:
+    token: TOKEN
+
 machines:
   linux:
     cpus: 2
