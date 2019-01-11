@@ -155,6 +155,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 }
                 s.privileged = true
             end
+            
+            worker.trigger.after :up do |trigger|
+                trigger.warn = "Resuming the Docker Engine"
+                trigger.run_remote = {inline: "Start-Service docker"}
+            end
+            worker.trigger.before :destroy do |trigger|
+                trigger.warn = "Leaving the Docker Swarm"
+                trigger.run_remote = {inline: "docker swarm leave -f"}
+            end
         end
     end
 end
