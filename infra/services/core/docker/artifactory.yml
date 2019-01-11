@@ -26,5 +26,5 @@ volumes:
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/artifactory/data"
+      device: ":/${INFRA_FS_ROOT}/artifactory/data"
     

@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:    
+  gitlab_runner_win:
+    image: mcr.microsoft.com/windows/nanoserver:1809
+    #image: patsissons/gitlab-runner-windows:develop
+    entrypoint:
+      - ls 
+      - C:/Gitlab-Runner
+    volumes:
+      - gitlab_runner_win:C:\Gitlab-Runner\
+    configs:
+      - source: "config.toml"
+        target: "C:\\Gitlab-Runner\\config.toml"
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: 
+          - node.platform.os == windows

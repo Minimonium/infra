@@ -151,18 +151,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 s.path = "infra/base/deploy.ps1"
                 s.env = {
                     "INFRA_MANAGER_IP" => "#{manager_ip}",
-                    "INFRA_WORKER_IP" => "#{worker_ip}"
+                    "INFRA_WORKER_IP" => "#{worker_ip}",
+
+                    "INFRA_FS_SERVER" => "#{infra["fs"]["server"]}",
+                    "INFRA_FS_ROOT" => "#{infra["fs"]["root"]}"
                 }
                 s.privileged = true
             end
             
             worker.trigger.after :up do |trigger|
                 trigger.warn = "Resuming the Docker Engine"
-                trigger.run_remote = {inline: "Start-Service docker"}
+                trigger.run_remote = {
+                    path: "infra/base/up.ps1",
+                    privileged: true
+                }
             end
             worker.trigger.before :destroy do |trigger|
                 trigger.warn = "Leaving the Docker Swarm"
-                trigger.run_remote = {inline: "docker swarm leave -f"}
+                trigger.run_remote = {
+                    path: "infra/base/destroy.ps1",
+                    privileged: true
+                }
             end
         end
     end

@@ -3,7 +3,7 @@
 echo "infra: DNS: Running..."
 
 # docker volume create -d vieux/sshfs \
-# -o sshcmd=${INFRA_FS_USER}@${INFRA_FS_SERVER}:${INFRA_FS_ROOT}/dns-logs \
+# -o sshcmd=${INFRA_FS_USER}@${INFRA_FS_SERVER}:/${INFRA_FS_ROOT}/dns-logs \
 # -o port=${INFRA_FS_PORT} \
 # -o allow_other \
 # dns-logs

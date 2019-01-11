@@ -61,37 +61,37 @@ volumes:
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab/common_data"
+      device: ":/${INFRA_FS_ROOT}/gitlab/common_data"
   gitlab_data:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab/data"
+      device: ":/${INFRA_FS_ROOT}/gitlab/data"
   gitlab_logs:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab/logs"
+      device: ":/${INFRA_FS_ROOT}/gitlab/logs"
   gitlab_config:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab/config"
+      device: ":/${INFRA_FS_ROOT}/gitlab/config"
   redis_data:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: :${INFRA_FS_ROOT}/redis
+      device: :/${INFRA_FS_ROOT}/redis
   # postgres_data:
   #   driver: local
   #   driver_opts:
   #     type: nfs4
   #     o: "addr=${INFRA_FS_SERVER}"
-  #     device: :${INFRA_FS_ROOT}/postgres
+  #     device: :/${INFRA_FS_ROOT}/postgres
 
 configs:
   gitlab.rb:

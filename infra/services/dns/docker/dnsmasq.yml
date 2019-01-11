@@ -24,4 +24,4 @@ volumes:
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/dns/logs"
+      device: ":/${INFRA_FS_ROOT}/dns/logs"

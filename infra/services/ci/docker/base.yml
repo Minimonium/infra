@@ -10,14 +10,14 @@ volumes:
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab-runner/lin"
+      device: ":/${INFRA_FS_ROOT}/gitlab-runner/lin"
 
   gitlab_runner_win:
     driver: local
-    driver_opts:
-      type: nfs4
-      o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab-runner/win"
+    #driver_opts:
+    #  type: nfs4
+    #  o: "addr=${INFRA_FS_SERVER}"
+    #  device: ":/${INFRA_FS_ROOT}/gitlab-runner/win"
 
 configs:
   config.toml:
