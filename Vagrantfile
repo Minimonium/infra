@@ -162,17 +162,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             worker.trigger.after :up do |trigger|
                 trigger.warn = "Resuming the Docker Engine"
                 trigger.run_remote = {
-                    path: "infra/base/up.ps1",
-                    privileged: true
+                    path: "infra/base/up.ps1"
                 }
+                trigger.on_error = :continue
             end
-            worker.trigger.before :destroy do |trigger|
-                trigger.warn = "Leaving the Docker Swarm"
-                trigger.run_remote = {
-                    path: "infra/base/destroy.ps1",
-                    privileged: true
-                }
-            end
+            # hangs for some reason
+            # worker.trigger.before :destroy do |trigger|
+            #     trigger.warn = "Leaving the Docker Swarm"
+            #     trigger.run_remote = {
+            #         path: "infra/base/destroy.ps1",
+            #         privileged: true
+            #     }
+            #     trigger.on_error = :continue
+            # end
         end
     end
 end
