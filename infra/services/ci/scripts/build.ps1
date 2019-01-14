@@ -1,0 +1,1 @@
+docker build -t win1809-gitlab-runner --no-cache ${workdir}/docker/images/win1809-gitlab-runner

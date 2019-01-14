@@ -24,26 +24,32 @@ For the basic infratructure deployment use:
 
 ```bash
 vagrant up
+# Wait for core services to be up, get required tokens and put them into the config [like gitlab runner token]
+vagrant provision --provision-with=ci
 ```
 
-To fix potential problems when deploying one can run provision again with:
+To fix any problems try to reprovision as:
 
 ```bash
-vagrant provision --provision-with=core
+vagrant provision --provision-with=core-deploy,core
 vagrant provision --provision-with=dns
 ```
 
-To restore stuff from backups run:
+List of provisioners:
 
-```bash
-vagrant provision --provision-with=core-restore
-```
-
-To backup stuff run:
-
-```bash
-vagrant provision --provision-with=core-backup
-```
+* base-deploy
+* fs-stub-deploy [optional]
+* core:
+  * core-deploy
+  * core
+  * core-backup
+  * core-restore
+* ci:
+  * ci-deploy
+  * ci
+* dns [optional]:
+  * dns-deploy
+  * dns
 
 ## Problems
 
