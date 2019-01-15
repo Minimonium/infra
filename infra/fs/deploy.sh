@@ -12,6 +12,7 @@ mkdir -p /srv/infra/artifactory/{storage,data} && \
 mkdir -p /srv/infra/artifactory/storage/{backup,disk0} && \
 mkdir -p /srv/infra/artifactory/data/etc && \
 mkdir -p /srv/infra/gitlab-runner/{lin,win} && \
+mkdir -p /srv/infra/gitlab-runner/lin/{config,cache} && \
 mkdir -p /srv/infra/gitlab/{storage,data,logs,config} && \
 mkdir -p /srv/infra/gitlab/storage/{backup,disk0} && \
 (cp -r /vagrant/backup/*gitlab_backup.tar /srv/infra/gitlab/data/backup | true) && \

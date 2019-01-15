@@ -5,12 +5,18 @@ networks:
     external: true
 
 volumes:
-  gitlab_runner_lin:
+  gitlab_runner_lin_config:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":/${INFRA_FS_ROOT}/gitlab-runner/lin"
+      device: ":/${INFRA_FS_ROOT}/gitlab-runner/lin/config"
+  gitlab_runner_lin_cache:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/gitlab-runner/lin/cache"
 
   gitlab_runner_win:
     driver: local

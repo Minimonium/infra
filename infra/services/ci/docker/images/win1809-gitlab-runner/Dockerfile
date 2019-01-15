@@ -9,6 +9,7 @@ ENV chocolateyUseWindowsCompression=false \
 
 # Tools
 RUN iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); \
+    choco config set cachelocation C:\chococache; \
     $env:Path += '";C:\tools\python3;C:\tools\python3\Scripts"'; \
     choco install --no-progress --yes git --params '"/InstallDir:C:\tools\git"'; \
     choco install --no-progress --yes nsis --params '"/InstallDir:C:\tools\nsis"'; \
@@ -16,9 +17,8 @@ RUN iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.or
     choco install --no-progress --yes python3 --params '"/InstallDir:C:\tools\python3"'
 
 # MSVC
-RUN choco install --no-progress --yes visualstudio2017buildtools --params "--includeOptional"; \
-    choco install --no-progress --yes --execution-timeout=100000 visualstudio2017-workload-vctools --params "--includeOptional"; \
-    cat C:\ProgramData\chocolatey\logs\chocolatey.log
+RUN choco install --no-progress --yes --execution-timeout=0 visualstudio2017buildtools --timeout=0 --params "--includeOptional";
+RUN choco install --no-progress --yes visualstudio2017-workload-vctools -dv --timeout=0 --params "--includeOptional";
 
 # Conan
 RUN python -m pip install --quiet --upgrade pip; \
@@ -29,6 +29,10 @@ RUN python -m pip install --quiet --upgrade pip; \
 # Gitlab-Runner
 RUN choco install --no-progress --yes gitlab-runner --params '"/InstallDir:C:\gitlab-runner"';
 
+# Clean up
+RUN rmdir /S /Q C:\chococache
+
+# Fix to make Gitlab-Runner Run work
 RUN net accounts /MaxPWAge:unlimited; \
     net user build_user /add; \
     net localgroup Administrators /add build_user

@@ -14,10 +14,11 @@ services:
       "--run-untagged",
       "--locked=false"]
     volumes:
-      - gitlab_runner_lin:/home/gitlab-runner
-    configs:
-      - source: "config.toml"
-        target: "/etc/gitlab-runner/config.toml"
+      - gitlab_runner_lin_config:/etc/gitlab-runner:z
+      - gitlab_runner_lin_cache:/home/gitlab-runner:z
+    # configs:
+    #   - source: "config.toml"
+    #     target: "/etc/gitlab-runner/config.toml"
     networks:
       - infra_network
     deploy:
@@ -33,10 +34,11 @@ services:
     image: gitlab/gitlab-runner:alpine
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - gitlab_runner_lin:/home/gitlab-runner
-    configs:
-      - source: "config.toml"
-        target: "/etc/gitlab-runner/config.toml"
+      - gitlab_runner_lin_config:/etc/gitlab-runner:z
+      - gitlab_runner_lin_cache:/home/gitlab-runner:z
+    # configs:
+    #   - source: "config.toml"
+    #     target: "/etc/gitlab-runner/config.toml"
     networks:
       - infra_network
     deploy:

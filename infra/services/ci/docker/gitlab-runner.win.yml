@@ -8,12 +8,12 @@ services:
       "--url", "http://gitlab.${INFRA_DOMAIN}",
       "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
       "--executor", "shell",
-      "--description", "azure-tiger",
+      "--description", "azure-dragon",
       "--tag-list", "shell,windows,msbuild,nsis,conan,python3",
       "--run-untagged",
       "--locked=false"]
     volumes:
-      - gitlab_runner_win:C:\Users\build_user\
+      - gitlab_runner_win:C:\Users\build_user\:z
     networks:
       - infra_network
     deploy:
@@ -28,7 +28,7 @@ services:
   gitlab_runner_win:
     image: win1809-gitlab-runner:latest
     volumes:
-      - gitlab_runner_win:C:\Users\build_user\
+      - gitlab_runner_win:C:\Users\build_user\:z
     networks:
       - infra_network
     deploy:
