@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <config version="v1">
+    <chain>
+        <provider id="file-system" type="file-system">
+        <fileStoreDir>/media/disk0</fileStoreDir>
+        </provider>
+    </chain>
+    <!-- Example of nested archieve storages -->
+    <!-- <chain>
+      <provider id="external-wrapper" type="external-wrapper">
+        <connectMode>passThrough</connectMode>
+        <provider id="external-file" type="external-file">
+          <externalDir>/media/disk0</externalDir>
+          <provider id="file-system" type="file-system">
+            <fileStoreDir>/media/disk1</fileStoreDir>
+          </provider>
+        </provider>
+      </provider>
+    </chain> -->
+  </config>
+</root>

@@ -90,10 +90,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             :path => "infra/services/core/run.sh"
         })
         manager.vm.provision "core-restore", core_provision.merge({
-            :path => "infra/services/core/restore.sh"
+            :path => "infra/services/core/restore.sh",
+            :run => "never"
         })
         manager.vm.provision "core-backup", core_provision.merge({
-            :path => "infra/services/core/backup.sh"
+            :path => "infra/services/core/backup.sh",
+            :run => "never"
         })
 
         ci_env = {

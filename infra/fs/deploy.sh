@@ -8,10 +8,12 @@ mkdir -p /srv/infra/windows && \
 mkdir -p /srv/infra/dns/logs && \
 mkdir -p /srv/infra/traefik/logs && \
 mkdir -p /srv/infra/portainer/data && \
-mkdir -p /srv/infra/artifactory/data && \
+mkdir -p /srv/infra/artifactory/{storage,data} && \
+mkdir -p /srv/infra/artifactory/storage/{backup,disk0} && \
+mkdir -p /srv/infra/artifactory/data/etc && \
 mkdir -p /srv/infra/gitlab-runner/{lin,win} && \
-mkdir -p /srv/infra/gitlab/{common_data,data,logs,config} && \
-mkdir -p /srv/infra/gitlab/data/{backup,disk0} && \
+mkdir -p /srv/infra/gitlab/{storage,data,logs,config} && \
+mkdir -p /srv/infra/gitlab/storage/{backup,disk0} && \
 (cp -r /vagrant/backup/*gitlab_backup.tar /srv/infra/gitlab/data/backup | true) && \
 mkdir -p /srv/infra/postgres && \
 mkdir -p /srv/infra/redis && \

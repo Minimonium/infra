@@ -5,11 +5,11 @@ services:
     image: "gitlab/gitlab-ce:11.1.1-ce.0"
     container_name: gitlab_compose
     volumes:
-      - "${INFRA_DIR}/config/gitlab.rb:/etc/gitlab/gitlab.rb:ro"
-      - "gitlab_common_data:/var/opt/gitlab"
-      - "gitlab_data:/media"
-      - "gitlab_logs:/var/log/gitlab"
-      - "gitlab_config:/etc/gitlab"
+      - ${INFRA_DIR}/config/gitlab.rb:/etc/gitlab/gitlab.rb:ro
+      - gitlab_storage:/var/opt/gitlab
+      - gitlab_data:/media
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_config:/etc/gitlab
   redis:
     image: "redis:alpine"
     volumes:
@@ -25,12 +25,12 @@ services:
   #     POSTGRES_DB: gitlab
 
 volumes:
-  gitlab_common_data:
+  gitlab_storage:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":/${INFRA_FS_ROOT}/gitlab/common_data"
+      device: ":/${INFRA_FS_ROOT}/gitlab/storage"
   gitlab_data:
     driver: local
     driver_opts:

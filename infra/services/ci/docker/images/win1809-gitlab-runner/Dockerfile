@@ -17,7 +17,8 @@ RUN iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.or
 
 # MSVC
 RUN choco install --no-progress --yes visualstudio2017buildtools --params "--includeOptional"; \
-    choco install --no-progress --yes --execution-timeout=0 visualstudio2017-workload-vctools --params "--includeOptional";
+    choco install --no-progress --yes --execution-timeout=100000 visualstudio2017-workload-vctools --params "--includeOptional"; \
+    cat C:\ProgramData\chocolatey\logs\chocolatey.log
 
 # Conan
 RUN python -m pip install --quiet --upgrade pip; \
@@ -26,8 +27,13 @@ RUN python -m pip install --quiet --upgrade pip; \
     python -m pip install conan_package_tools --quiet --upgrade --force-reinstall --no-cache
 
 # Gitlab-Runner
-RUN choco install -y gitlab-runner
+RUN choco install --no-progress --yes gitlab-runner --params '"/InstallDir:C:\gitlab-runner"';
 
-WORKDIR "C:/Users/ContainerAdministrator"
+RUN net accounts /MaxPWAge:unlimited; \
+    net user build_user /add; \
+    net localgroup Administrators /add build_user
+USER build_user
 
-ENTRYPOINT ["gitlab-runner", "run", "-c", "C:\config.toml"]
+WORKDIR "C:/Users/build_user"
+ENTRYPOINT ["gitlab-runner.exe"]
+CMD ["run"]

@@ -1,15 +1,34 @@
 version: '3.4'
 
-services:    
+services:
+  gitlab_runner_win_registrator:
+    image: win1809-gitlab-runner:latest
+    command: ["register",
+      "--non-interactive",
+      "--url", "http://gitlab.${INFRA_DOMAIN}",
+      "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
+      "--executor", "shell",
+      "--description", "azure-tiger",
+      "--tag-list", "shell,windows,msbuild,nsis,conan,python3",
+      "--run-untagged",
+      "--locked=false"]
+    volumes:
+      - gitlab_runner_win:C:\Users\build_user\
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints: 
+          - node.platform.os == windows
+
   gitlab_runner_win:
-    image: win1809-gitlab-runner
-    # image: mcr.microsoft.com/windows/nanoserver:1809
-    # image: patsissons/gitlab-runner-windows:develop
-    # volumes:
-    #   - gitlab_runner_win:C:\Gitlab-Runner\
-    configs:
-      - source: "config.toml"
-        target: "C:\\config.toml"
+    image: win1809-gitlab-runner:latest
+    volumes:
+      - gitlab_runner_win:C:\Users\build_user\
     networks:
       - infra_network
     deploy:

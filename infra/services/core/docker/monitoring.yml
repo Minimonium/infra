@@ -22,9 +22,9 @@ services:
     configs:
       - grafana.ini
     volumes:
-      - "grafana_data:/data"
-      - "grafana_logs:/var/log/grafana"
-      - "grafana_config:/etc/grafana"
+      - grafana_data:/data
+      - grafana_logs:/var/log/grafana
+      - grafana_config:/etc/grafana
     networks:
       - infra_network
     deploy:

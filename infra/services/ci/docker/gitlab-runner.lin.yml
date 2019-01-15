@@ -1,6 +1,34 @@
 version: '3.4'
 
-services:    
+services:
+  gitlab_runner_registrator:
+    image: gitlab/gitlab-runner:alpine
+    command: ["register",
+      "--non-interactive",
+      "--url", "http://gitlab.${INFRA_DOMAIN}",
+      "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
+      "--executor", "docker",
+      "--docker-image", "alpine:3",
+      "--description", "vermillion-bird",
+      "--tag-list", "docker,linux",
+      "--run-untagged",
+      "--locked=false"]
+    volumes:
+      - gitlab_runner_lin:/home/gitlab-runner
+    configs:
+      - source: "config.toml"
+        target: "/etc/gitlab-runner/config.toml"
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints: 
+          - node.platform.os == linux
+
   gitlab_runner_lin:
     image: gitlab/gitlab-runner:alpine
     volumes:
