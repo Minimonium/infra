@@ -15,7 +15,7 @@ mkdir -p /srv/infra/gitlab-runner/{lin,win} && \
 mkdir -p /srv/infra/gitlab-runner/lin/{config,cache} && \
 mkdir -p /srv/infra/gitlab/{storage,data,logs,config} && \
 mkdir -p /srv/infra/gitlab/storage/{backup,disk0} && \
-(cp -r /vagrant/backup/*gitlab_backup.tar /srv/infra/gitlab/data/backup | true) && \
+(cp -r /vagrant/backup/*gitlab_backup.tar /srv/infra/gitlab/storage/backup | true) && \
 mkdir -p /srv/infra/postgres && \
 mkdir -p /srv/infra/redis && \
 mkdir -p /srv/infra/prometheus && \
