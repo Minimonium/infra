@@ -2,12 +2,12 @@ version: '3.4'
 
 services:
   gitlab:
-    image: "gitlab/gitlab-ce:11.1.1-ce.0"
+    image: "gitlab/gitlab-ce:latest"
     volumes:
-      - gitlab_data:/var/opt/gitlab
-      - gitlab_storage:/media
-      - gitlab_logs:/var/log/gitlab
-      - gitlab_config:/etc/gitlab
+      - gitlab_data:/var/opt/gitlab:Z
+      - gitlab_storage:/media:Z
+      - gitlab_logs:/var/log/gitlab:Z
+      - gitlab_config:/etc/gitlab:Z
     ports:
       - "8022:8022"
     configs:
