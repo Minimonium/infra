@@ -6,8 +6,8 @@ services:
     container_name: gitlab_compose
     volumes:
       - ${INFRA_DIR}/config/gitlab.rb:/etc/gitlab/gitlab.rb:ro
-      - gitlab_storage:/var/opt/gitlab:Z
-      - gitlab_data:/media:Z
+      - gitlab_data:/var/opt/gitlab:Z
+      - gitlab_storage:/media:Z
       - gitlab_logs:/var/log/gitlab:Z
       - gitlab_config:/etc/gitlab:Z
   redis:
