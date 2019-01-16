@@ -4,7 +4,7 @@ services:
   gitlab:
     image: "gitlab/gitlab-ce:latest"
     volumes:
-      - gitlab_data:/var/opt/gitlab:Z
+      - gitlab_data:/var/opt:Z
       - gitlab_storage:/media:Z
       - gitlab_logs:/var/log/gitlab:Z
       - gitlab_config:/etc/gitlab:Z
