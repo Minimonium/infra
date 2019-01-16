@@ -16,8 +16,7 @@ RUN iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.or
     choco install --no-progress --yes python3 --params '"/InstallDir:C:\tools\python3"'
 
 # MSVC
-RUN rm C:\ProgramData\chocolatey\logs\chocolatey.log; \
-    choco install --no-progress --yes --execution-timeout=0 visualstudio2017buildtools; \
+RUN choco install --no-progress --yes --execution-timeout=0 visualstudio2017buildtools; \
     choco install --no-progress --yes --execution-timeout=0 visualstudio2017-workload-vctools; \
     choco install --no-progress --yes --execution-timeout=0 visualstudio2017-workload-nativedesktop; \
     choco install --no-progress --yes --execution-timeout=0 visualstudio2017-workload-visualstudioextension --params "--includeRecommended --includeOptional";
@@ -37,7 +36,7 @@ RUN net accounts /MaxPWAge:unlimited; \
     net user build_user /add; \
     net localgroup Administrators /add build_user
 USER build_user
-
 WORKDIR "C:/Users/build_user"
+
 ENTRYPOINT ["gitlab-runner.exe"]
 CMD ["run"]
