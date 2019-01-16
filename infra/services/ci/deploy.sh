@@ -1,7 +1,6 @@
 #!/bin/bash
 
-echo "infra: DNS: Deploying..."
-
+# Set up Working Directory
 mkdir -p ${INFRA_DIR}
 cp -r ${INFRA_WORKDIR}/. ${INFRA_DIR}
 
@@ -9,4 +8,4 @@ cp -r ${INFRA_WORKDIR}/. ${INFRA_DIR}
 find ${INFRA_DIR} -type f | xargs sed -i 's/\r$//'
 
 source ${INFRA_DIR}/scripts/preconfigure.sh
-source ${INFRA_DIR}/scripts/fix-systemd-resolved.sh
+source ${INFRA_DIR}/scripts/build.sh

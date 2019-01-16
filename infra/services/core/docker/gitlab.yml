@@ -4,10 +4,10 @@ services:
   gitlab:
     image: "gitlab/gitlab-ce:11.1.1-ce.0"
     volumes:
-      - "gitlab_common_data:/var/opt/gitlab"
-      - "gitlab_data:/media"
-      - "gitlab_logs:/var/log/gitlab"
-      - "gitlab_config:/etc/gitlab"
+      - gitlab_data:/var/opt/gitlab
+      - gitlab_storage:/media
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_config:/etc/gitlab
     ports:
       - "8022:8022"
     configs:
@@ -56,42 +56,42 @@ services:
   #     POSTGRES_DB: gitlab
 
 volumes:
-  gitlab_common_data:
-    driver: local
-    driver_opts:
-      type: nfs4
-      o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab/common_data"
   gitlab_data:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab/data"
+      device: ":/${INFRA_FS_ROOT}/gitlab/data"
+  gitlab_storage:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/gitlab/storage"
   gitlab_logs:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab/logs"
+      device: ":/${INFRA_FS_ROOT}/gitlab/logs"
   gitlab_config:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/gitlab/config"
+      device: ":/${INFRA_FS_ROOT}/gitlab/config"
   redis_data:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: :${INFRA_FS_ROOT}/redis
+      device: :/${INFRA_FS_ROOT}/redis
   # postgres_data:
   #   driver: local
   #   driver_opts:
   #     type: nfs4
   #     o: "addr=${INFRA_FS_SERVER}"
-  #     device: :${INFRA_FS_ROOT}/postgres
+  #     device: :/${INFRA_FS_ROOT}/postgres
 
 configs:
   gitlab.rb:

@@ -7,7 +7,11 @@ optional:
 
 fs:
   server: 10.10.10.10
-  root: /infra-swarm
+  root: infra
+
+services:
+  gitlab-runner:
+    token: TOKEN
 
 machines:
   linux:

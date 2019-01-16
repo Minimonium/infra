@@ -22,9 +22,9 @@ services:
     configs:
       - grafana.ini
     volumes:
-      - "grafana_data:/data"
-      - "grafana_logs:/var/log/grafana"
-      - "grafana_config:/etc/grafana"
+      - grafana_data:/data
+      - grafana_logs:/var/log/grafana
+      - grafana_config:/etc/grafana
     networks:
       - infra_network
     deploy:
@@ -39,25 +39,25 @@ volumes:
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/prometheus"
+      device: ":/${INFRA_FS_ROOT}/prometheus"
   grafana_data:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/grafana/data"
+      device: ":/${INFRA_FS_ROOT}/grafana/data"
   grafana_logs:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/grafana/logs"
+      device: ":/${INFRA_FS_ROOT}/grafana/logs"
   grafana_config:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":${INFRA_FS_ROOT}/grafana/config"
+      device: ":/${INFRA_FS_ROOT}/grafana/config"
 
 configs:
   prometheus.yaml:
