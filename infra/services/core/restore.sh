@@ -15,7 +15,7 @@ if docker inspect -f {{.State.Running}} gitlab_compose ; then
     docker exec gitlab_compose bash -c 'gitlab-ctl reconfigure && \
     gitlab-ctl stop unicorn && \
     gitlab-ctl stop sidekiq && \
-    gitlab-rake gitlab:backup:restore BACKUP=$(find *_gitlab_backup.tar | sed -e "s/_gitlab_backup.tar//" | tail -n 1) force=yes && \
+    gitlab-rake gitlab:backup:restore BACKUP=$(find /media/backup/*_gitlab_backup.tar | sed -e "s/_gitlab_backup.tar//" | tail -n 1) force=yes && \
     gitlab-ctl start'
 else
     echo "infra: Gitlab CONTAINER IS NOT RUNNING"
