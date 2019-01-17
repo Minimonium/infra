@@ -4,25 +4,18 @@ services:
   gitlab:
     image: "gitlab/gitlab-ce:11.1.1-ce.0"
     container_name: gitlab_compose
+    networks:
+      - infra_network
     volumes:
       - ${INFRA_DIR}/config/gitlab.rb:/etc/gitlab/gitlab.rb:ro
       - gitlab_data:/var/opt/gitlab
       - gitlab_storage:/media
       - gitlab_logs:/var/log/gitlab
       - gitlab_config:/etc/gitlab
-  redis:
-    image: "redis:alpine"
-    volumes:
-      - "redis_data:/data"
-  # postgres:
-  #   image: "postgres:9.6-alpine"
-  #   volumes:
-  #     - "postgres_data:/data"
-  #   environment:
-  #     POSTGRES_USER: gitlab
-  #     POSTGRES_PASSWORD: gitlab
-  #     PGDATA: /data
-  #     POSTGRES_DB: gitlab
+
+networks:
+  infra_network:
+    external: true
 
 volumes:
   gitlab_storage:
