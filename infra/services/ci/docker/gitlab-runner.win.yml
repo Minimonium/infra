@@ -5,7 +5,7 @@ services:
     image: win1809-gitlab-runner:latest
     command: ["register",
       "--non-interactive",
-      "--url", "http://gitlab.${INFRA_DOMAIN}",
+      "--url", "infra_gitlab",
       "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
       "--executor", "shell",
       "--description", "azure-dragon",
