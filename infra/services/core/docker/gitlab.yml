@@ -9,7 +9,7 @@ services:
       - gitlab_logs:/var/log/gitlab
       - gitlab_config:/etc/gitlab
     ports:
-      - "8022:8022"
+      - "8022:22"
     configs:
       - source: "gitlab.rb"
         target: "/etc/gitlab/gitlab.rb"
