@@ -19,3 +19,15 @@ network = "infra_network"
 exposedByDefault = false
 watch = true
 swarmMode = true
+
+[retry]
+attempts = 30
+
+[respondingTimeouts]
+readTimeout = "360s"
+writeTimeout = "360s"
+idleTimeout = "360s"
+
+[forwardingTimeouts]
+dialTimeout = "360s"
+responseHeaderTimeout = "360s"
