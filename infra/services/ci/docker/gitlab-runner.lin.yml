@@ -15,7 +15,6 @@ services:
       "--locked=false"]
     volumes:
       - gitlab_runner_lin_config:/etc/gitlab-runner:z
-      - gitlab_runner_lin_cache:/home/gitlab-runner:z
     # configs:
     #   - source: "config.toml"
     #     target: "/etc/gitlab-runner/config.toml"
@@ -27,7 +26,7 @@ services:
       restart_policy:
         condition: none
       placement:
-        constraints: 
+        constraints:
           - node.platform.os == linux
 
   gitlab_runner_lin:
@@ -35,7 +34,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - gitlab_runner_lin_config:/etc/gitlab-runner:z
-      - gitlab_runner_lin_cache:/home/gitlab-runner:z
     # configs:
     #   - source: "config.toml"
     #     target: "/etc/gitlab-runner/config.toml"
@@ -47,5 +45,5 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: 
+        constraints:
           - node.platform.os == linux
