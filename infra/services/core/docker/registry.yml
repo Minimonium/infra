@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  registry:
+    image: registry:2
+    volumes:
+      - registry_data:/var/lib/registry
+      - ${INFRA_DIR}/config/auth:/auth
+    environment:
+      - "REGISTRY_AUTH=htpasswd"
+      - "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm"
+      - "REGISTRY_AUTH_HTPASSWD_PATH=/auth/.htpasswd"
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.platform.os == linux
+      labels:
+        traefik.enable: "true"
+        traefik.port: 5000
+        traefik.frontend.entryPoints: "https,http"
+        traefik.frontend.rule: "Host:registry.${INFRA_DOMAIN}"
+
+volumes:
+  registry_data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/registry/data"

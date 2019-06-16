@@ -7,6 +7,7 @@ mkdir -p /srv/infra && \
 mkdir -p /srv/infra/windows && \
 mkdir -p /srv/infra/dns/logs && \
 mkdir -p /srv/infra/traefik/logs && \
+mkdir -p /srv/infra/registry/data && \
 mkdir -p /srv/infra/portainer/data && \
 mkdir -p /srv/infra/artifactory/{storage,data} && \
 mkdir -p /srv/infra/artifactory/storage/{backup,disk0} && \
