@@ -10,6 +10,7 @@ Consists of:
   * Traefik [Frontend]
   * Artifactory [Binary Storage]
   * Gitlab [Source Storage]
+  * Docker Registry [Containers Storage]
   * Grafana, Prometheus [Naive Monitoring]
   * Visualizer, Portainer [Admin Tools]
 
@@ -19,6 +20,8 @@ Consists of:
 * Put ssh keys to the `.ssh` subfolder for secure Vagrant ssh keys
 * Configure `example.htpasswd` into `.htpasswd` for admin services auth.
 * Configure `example.gitlab.rb` into `gitlab.rb`.
+* Add certs for Traefik into `core/config/certs/infra.{crt,key}`
+* Add auth for Docker Registry into `core/config/auth/.htpasswd`
 
 For the basic infratructure deployment use:
 
@@ -62,4 +65,3 @@ List of provisioners:
 * Docker NFS on Windows [Can't use `driver_opts` on Windows]
 * NFS on Windows with Docker symlinked into it [Don't work, tell me if you know how to make it work, please]
 * Named pipes volumes to windows containers [Swarm treats them as non-absolute pathes, [workaround](https://github.com/dockersamples/docker-swarm-visualizer#running-on-windows)]
-* [Gitlab Windows Docker Executors](https://gitlab.com/gitlab-org/gitlab-runner/merge_requests/706) [Not ready]
