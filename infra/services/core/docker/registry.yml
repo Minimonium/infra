@@ -5,11 +5,25 @@ services:
     image: registry:2
     volumes:
       - registry_data:/var/lib/registry
-      - ${INFRA_DIR}/config/auth:/auth
+      - ${INFRA_DIR}/config/registry/config.yml:/etc/docker/registry/config.yml
+      - ${INFRA_DIR}/config/registry/auth:/auth
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.platform.os == linux
+
+  registry_ui:
+    image: joxit/docker-registry-ui:static
     environment:
-      - "REGISTRY_AUTH=htpasswd"
-      - "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm"
-      - "REGISTRY_AUTH_HTPASSWD_PATH=/auth/.htpasswd"
+      - "REGISTRY_TITLE=Infra Registry"
+      - "REGISTRY_URL=http://infra_registry:5000"
+      - "DELETE_IMAGES=true"
     networks:
       - infra_network
     deploy:
@@ -22,7 +36,7 @@ services:
           - node.platform.os == linux
       labels:
         traefik.enable: "true"
-        traefik.port: 5000
+        traefik.port: 80
         traefik.frontend.entryPoints: "https,http"
         traefik.frontend.rule: "Host:registry.${INFRA_DOMAIN}"
 

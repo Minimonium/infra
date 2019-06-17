@@ -21,7 +21,9 @@ Consists of:
 * Configure `example.htpasswd` into `.htpasswd` for admin services auth.
 * Configure `example.gitlab.rb` into `gitlab.rb`.
 * Add certs for Traefik into `core/config/certs/infra.{crt,key}`
-* Add auth for Docker Registry into `core/config/auth/.htpasswd`
+* To Configure Docker Registry
+  * Add auth for Docker Registry into `core/config/registry/auth/.htpasswd`
+  * View [DOCS](/docs/registry) for additional setup
 
 For the basic infratructure deployment use:
 
