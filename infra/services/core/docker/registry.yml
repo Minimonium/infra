@@ -1,0 +1,49 @@
+version: '3.4'
+
+services:
+  registry:
+    image: registry:2
+    volumes:
+      - registry_data:/var/lib/registry
+      - ${INFRA_DIR}/config/registry/config.yml:/etc/docker/registry/config.yml
+      - ${INFRA_DIR}/config/registry/auth:/auth
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.platform.os == linux
+
+  registry_ui:
+    image: joxit/docker-registry-ui:static
+    environment:
+      - "REGISTRY_TITLE=Infra Registry"
+      - "REGISTRY_URL=http://infra_registry:5000"
+      - "DELETE_IMAGES=true"
+    networks:
+      - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.platform.os == linux
+      labels:
+        traefik.enable: "true"
+        traefik.port: 80
+        traefik.frontend.entryPoints: "https,http"
+        traefik.frontend.rule: "Host:registry.${INFRA_DOMAIN}"
+
+volumes:
+  registry_data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/registry/data"

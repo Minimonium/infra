@@ -9,6 +9,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - traefik_logs:/var/log/traefik/
+      - ${INFRA_DIR}/config/certs:/certs
     configs:
       - source: ".htpasswd"
         target: "/etc/traefik/.htpasswd"
@@ -22,7 +23,7 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: 
+        constraints:
           - node.platform.os == linux
           - node.role == manager
       labels:

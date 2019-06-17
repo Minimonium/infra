@@ -2,8 +2,10 @@
 .ssh/
 .vscode/
 
-backup
+/backup/
 
-config.yml
+/infra/services/core/config/registry/auth/
+/infra/services/core/config/certs/
+/config.yml
 .htpasswd
 gitlab.rb

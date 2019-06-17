@@ -1,13 +1,20 @@
-logLevel = "DEBUG"
+logLevel = "INFO"
 [traefikLog]
 filePath = "/var/log/traefik/traefik.log"
 [accessLog]
 filePath = "/var/log/traefik/access.log"
 
-defaultEntryPoints = ["http"]
+defaultEntryPoints = ["https","http"]
+insecureSkipVerify = true
 [entryPoints]
     [entryPoints.http]
     address = ":80"
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
+        [[entryPoints.https.tls.certificates]]
+        certFile = "/certs/infra.crt"
+        keyFile = "/certs/infra.key"
 
 [api]
 address = ":8080"
