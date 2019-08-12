@@ -7,9 +7,10 @@ services:
       "--non-interactive",
       "--url", "http://gitlab.${INFRA_DOMAIN}",
       "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
-      "--executor", "shell",
+      "--executor", "docker-windows",
+      "--docker-image", "mcr.microsoft.com/windows/servercore:1809",
       "--description", "azure-dragon",
-      "--tag-list", "shell,windows,msbuild,nsis,conan,python3",
+      "--tag-list", "docker,windows",
       "--run-untagged",
       "--locked=false"]
     volumes:
@@ -22,7 +23,7 @@ services:
       restart_policy:
         condition: none
       placement:
-        constraints: 
+        constraints:
           - node.platform.os == windows
 
   gitlab_runner_win:
@@ -37,5 +38,5 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: 
+        constraints:
           - node.platform.os == windows

@@ -18,6 +18,8 @@ volumes:
       o: "addr=${INFRA_FS_SERVER}"
       device: ":/${INFRA_FS_ROOT}/gitlab-runner/lin/cache"
 
+  gitlab_runner_win_config:
+    driver: local
   gitlab_runner_win:
     driver: local
     #driver_opts:
