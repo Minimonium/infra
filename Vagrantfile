@@ -188,10 +188,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 :type => "shell",
                 :path => "infra/services/ci/deploy.ps1",
                 :env => {},
-                :privileged => true
+                :privileged => true,
+                :run => "never"
             }
             worker.vm.provision("ci-deploy", ci_deploy_provision)
-            
+
             worker.trigger.after :up do |trigger|
                 trigger.warn = "Resuming the Docker Engine"
                 trigger.run_remote = {
