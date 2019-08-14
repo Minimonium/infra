@@ -8,7 +8,7 @@ services:
       "--url", "http://gitlab.${INFRA_DOMAIN}",
       "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
       "--executor", "docker",
-      "--docker-image", "alpine:3",
+      "--docker-image", "alpine:latest",
       "--description", "vermillion-bird",
       "--tag-list", "docker,linux",
       "--run-untagged",
