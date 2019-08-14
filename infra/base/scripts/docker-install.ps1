@@ -11,4 +11,5 @@ Get-FileHash -Path C:\Users\vagrant\AppData\Local\Temp\DockerMsftProvider\Docker
 
 Install-Package -Name docker -ProviderName DockerMsftProvider -Force -Verbose
 
+Set-Service docker -StartupType Automatic
 Start-Service docker
