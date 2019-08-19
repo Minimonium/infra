@@ -4,14 +4,12 @@ To use the Registry with self-signed certificates it's important to add them to 
 
 For Linux:
 
-```shell
+```bash
 /etc/docker/certs.d/registry.${infra.domain}/ca.crt
 ```
 
 For Windows:
 
-```shell
-#import cert chain
-$p7b = '\\dc2012\CertEnroll\FoxDeployCAChain.p7b'
-Import-Certificate -FilePath $p7b -CertStoreLocation Cert:\LocalMachine\Root
+```powershell
+Import-Certificate -FilePath "C:\vagrant\..." -CertStoreLocation Cert:\LocalMachine\Root
 ```
