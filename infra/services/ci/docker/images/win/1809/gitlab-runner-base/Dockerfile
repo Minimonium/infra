@@ -8,7 +8,6 @@ ENV chocolateyUseWindowsCompression=false \
     PYTHONIOENCODING=UTF-8
 
 # Install Choco
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force;
 RUN Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 # Gitlab-Runner
@@ -20,6 +19,3 @@ RUN net accounts /MaxPWAge:unlimited; \
     net localgroup Administrators /add build_user
 USER build_user
 WORKDIR "C:/Users/build_user"
-
-ENTRYPOINT ["gitlab-runner.exe"]
-CMD ["run"]

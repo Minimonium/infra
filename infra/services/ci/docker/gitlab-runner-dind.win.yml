@@ -1,23 +1,21 @@
 version: '3.4'
 
+# See https://gitlab.com/gitlab-org/gitlab-runner/issues/4295
+
 services:
-  gitlab_runner_win_registrator:
-    image: gitlab-runner:1809
+  gitlab_runner_win_dind_registrator:
+    image: gitlab-runner-dind:1809
     command: ["register",
       "--non-interactive",
       "--url", "http://gitlab.${INFRA_DOMAIN}",
       "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
-      "--executor", "docker-windows",
-      "--docker-image", "mcr.microsoft.com/windows/servercore:1809",
-      # Windows does not support privileged mode
-      # "--docker-privileged",
-      # See https://gitlab.com/gitlab-org/gitlab-runner/issues/4295
-      # "--docker-volumes", "\\\\.\\pipe\\docker_engine:\\\\.\\pipe\\docker_engine",
-      "--description", "azure-dragon",
-      "--tag-list", "docker,windows",
+      "--executor", "shell",
+      "--shell", "powershell",
+      "--description", "black-tortoise",
+      "--tag-list", "windows,dind",
       "--locked=false"]
     volumes:
-      - gitlab_runner_win_config:C:\Users\build_user\:z
+      - gitlab_runner_win_dind_config:C:\Users\build_user\:z
     networks:
       - infra_network
     deploy:
@@ -29,13 +27,13 @@ services:
         constraints:
           - node.platform.os == windows
 
-  gitlab_runner_win:
-    image: gitlab-runner:1809
+  gitlab_runner_win_dind:
+    image: gitlab-runner-dind:1809
     volumes:
       - type: npipe
         source: '\\.\pipe\docker_engine'
         target: '\\.\pipe\docker_engine'
-      - gitlab_runner_win_config:C:\Users\build_user\:z
+      - gitlab_runner_win_dind_config:C:\Users\build_user\:z
     networks:
       - infra_network
     deploy:
