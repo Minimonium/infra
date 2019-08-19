@@ -2,17 +2,21 @@
 
 Project to try out different local infrastructure options
 
-Consists of:
+> Based on *Vagrant* + *Docker Swarm*
 
-* Dnsmasq [DNS][Optional]
-* NFS [FS][Optional]
-* Services:
-  * Traefik [Frontend]
-  * Artifactory [Binary Storage]
-  * Gitlab [Source Storage]
-  * Docker Registry [Containers Storage]
-  * Grafana, Prometheus [Naive Monitoring]
-  * Visualizer, Portainer [Admin Tools]
+| Services       |  Group   |           Purpose |
+|----------------|:--------:|------------------:|
+| Traefik        |  Infra   |          Frontend |
+| Portainer      |  Infra   |           Manager |
+| Visualizer     |  Infra   | Cluster Dashboard |
+| Prometheus     |  Infra   |           Metrics |
+| Grafana        |  Infra   | Metrics Dashboard |
+| Artifactory    | Storage  |          Binaries |
+| Gitlab         | Storage  |           Sources |
+| Registry       | Storage  |        Containers |
+| Gitlab Runners |    CI    |                CI |
+| DNSMasq        | Optional |               DNS |
+| NFS            | Optional |       File System |
 
 ## Usage
 
