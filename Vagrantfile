@@ -53,7 +53,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             :env => {
                 "INFRA_WORKDIR" => "/vagrant/infra/base",
 
-                "INFRA_MANAGER_IP" => "#{manager_ip}"
+                "INFRA_MANAGER_IP" => "#{manager_ip}",
+
+                "INFRA_DOMAIN" => "#{infra["domain"]}"
             },
             :privileged => true
         }
@@ -158,12 +160,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             machine = infra["machines"]["windows"]
 
-            worker.vm.hostname = "divine-mother"
+            worker.vm.hostname = "celestial-queen"
             worker.vm.network :private_network,
                 ip: "#{worker_ip}"
 
             worker.vm.provider "virtualbox" do |vb|
-                vb.name = "divine-mother"
+                vb.name = "celestial-queen"
                 vb.gui = false
 
                 vb.cpus = machine["cpus"]
@@ -188,18 +190,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 :type => "shell",
                 :path => "infra/services/ci/deploy.ps1",
                 :env => {},
-                :privileged => true
+                :privileged => true,
+                :run => "never"
             }
             worker.vm.provision("ci-deploy", ci_deploy_provision)
-            
-            worker.trigger.after :up do |trigger|
-                trigger.warn = "Resuming the Docker Engine"
-                trigger.run_remote = {
-                    path: "infra/base/up.ps1"
-                }
-                trigger.on_error = :continue
-            end
-            # hangs for some reason
+
             # worker.trigger.before :destroy do |trigger|
             #     trigger.warn = "Leaving the Docker Swarm"
             #     trigger.run_remote = {

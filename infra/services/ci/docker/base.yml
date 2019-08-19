@@ -18,12 +18,10 @@ volumes:
       o: "addr=${INFRA_FS_SERVER}"
       device: ":/${INFRA_FS_ROOT}/gitlab-runner/lin/cache"
 
-  gitlab_runner_win:
+  gitlab_runner_win_dind_config:
     driver: local
-    #driver_opts:
-    #  type: nfs4
-    #  o: "addr=${INFRA_FS_SERVER}"
-    #  device: ":/${INFRA_FS_ROOT}/gitlab-runner/win"
+  gitlab_runner_win_config:
+    driver: local
 
 configs:
   config.toml:

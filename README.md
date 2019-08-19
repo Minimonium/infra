@@ -2,17 +2,21 @@
 
 Project to try out different local infrastructure options
 
-Consists of:
+> Based on *Vagrant* + *Docker Swarm*
 
-* Dnsmasq [DNS][Optional]
-* NFS [FS][Optional]
-* Services:
-  * Traefik [Frontend]
-  * Artifactory [Binary Storage]
-  * Gitlab [Source Storage]
-  * Docker Registry [Containers Storage]
-  * Grafana, Prometheus [Naive Monitoring]
-  * Visualizer, Portainer [Admin Tools]
+| Services       |  Group   |           Purpose |
+|----------------|:--------:|------------------:|
+| Traefik        |  Infra   |          Frontend |
+| Portainer      |  Infra   |           Manager |
+| Visualizer     |  Infra   | Cluster Dashboard |
+| Prometheus     |  Infra   |           Metrics |
+| Grafana        |  Infra   | Metrics Dashboard |
+| Artifactory    | Storage  |          Binaries |
+| Gitlab         | Storage  |           Sources |
+| Registry       | Storage  |        Containers |
+| Gitlab Runners |    CI    |                CI |
+| DNSMasq        | Optional |               DNS |
+| NFS            | Optional |       File System |
 
 ## Usage
 
@@ -22,7 +26,7 @@ Consists of:
 * Configure `example.gitlab.rb` into `gitlab.rb`.
 * Add certs for Traefik into `core/config/certs/infra.{crt,key}`
 * To Configure Docker Registry
-  * Add auth for Docker Registry into `core/config/registry/auth/.htpasswd`
+  * Add auth for Docker Registry into `core/config/registry/auth/.htpasswd` ([see](/docs/registry/generating-htpasswd.md))
   * View [DOCS](/docs/registry) for additional setup
 
 For the basic infratructure deployment use:
@@ -30,7 +34,7 @@ For the basic infratructure deployment use:
 ```bash
 vagrant up
 # Wait for core services to be up, get required tokens and put them into the config [like gitlab runner token]
-vagrant provision --provision-with=ci
+vagrant provision --provision-with=ci-deploy,ci
 ```
 
 To fix any problems try to reprovision as:
@@ -58,12 +62,9 @@ List of provisioners:
 
 ## Problems
 
-* Windows Server 2019 as a node in the Docker Swarm [is not production ready](https://github.com/moby/moby/issues/38498)
 * Kubernetes [Pretty complex, need to look into it later]
 * DNS in the Swarm [Swarm doesn't support CAP feature]
 * Vagrant SSH for the ed25519 [Doesn't work with `The private key you're attempting to use with this Vagrant box uses an unsupported encryption type` despite the version being 2.2.2]
-* Https [Because of the private network target]
 * SSHFS [Had a problem making it work without `:nocopy`, can't work with Docker Compose for some reason and don't work on Windows because plugins]
 * Docker NFS on Windows [Can't use `driver_opts` on Windows]
 * NFS on Windows with Docker symlinked into it [Don't work, tell me if you know how to make it work, please]
-* Named pipes volumes to windows containers [Swarm treats them as non-absolute pathes, [workaround](https://github.com/dockersamples/docker-swarm-visualizer#running-on-windows)]

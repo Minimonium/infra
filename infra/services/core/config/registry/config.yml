@@ -23,3 +23,5 @@ auth:
   htpasswd:
     realm: basic-realm
     path: /auth/.htpasswd
+validation:
+  disabled: true

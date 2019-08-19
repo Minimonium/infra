@@ -21,7 +21,28 @@ services:
       placement:
         constraints:
           - node.platform.os == linux
-          - node.role == manager
+
+  # portainer_agent_win:
+  #   image: portainer/agent
+  #   environment:
+  #     # REQUIRED: Should be equal to the service name prefixed by "tasks." when
+  #     # deployed inside an overlay network
+  #     AGENT_CLUSTER_ADDR: tasks.portainer_agent_win
+  #     # AGENT_PORT: 9001
+  #     # LOG_LEVEL: debug
+  #   volumes:
+  #     - type: npipe
+  #       source: '\\.\pipe\docker_engine'
+  #       target: '\\.\pipe\docker_engine'
+  #   networks:
+  #     - infra_network
+  #   deploy:
+  #     mode: global
+  #     restart_policy:
+  #       condition: on-failure
+  #     placement:
+  #       constraints:
+  #         - node.platform.os == windows
 
   portainer:
     image: portainer/portainer

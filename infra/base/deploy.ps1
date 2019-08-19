@@ -13,6 +13,8 @@ Write-Host "infra: Installing Docker..."
 Write-Host "infra: Joining the Docker Swarm..."
 . $workdir/scripts/docker-swarm-join.ps1
 
-# Hangs on up
+Write-Host "infra: Installing Certificates..."
+. $workdir/scripts/install-certificates.ps1
+
 # Write-Host "infra: Installing Chocolatey..."
 # . $workdir/chocolatey-install.ps1
