@@ -21,3 +21,6 @@ source ${INFRA_DIR}/scripts/docker-swarm-init.sh
 
 echo "infra: Installing the Common File System Components..."
 source ${INFRA_DIR}/scripts/fs-commons-install.sh
+
+echo "infra: Installing Certificates..."
+source ${INFRA_DIR}/scripts/install-certificates.sh

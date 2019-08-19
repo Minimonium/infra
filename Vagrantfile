@@ -53,7 +53,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             :env => {
                 "INFRA_WORKDIR" => "/vagrant/infra/base",
 
-                "INFRA_MANAGER_IP" => "#{manager_ip}"
+                "INFRA_MANAGER_IP" => "#{manager_ip}",
+
+                "INFRA_DOMAIN" => "#{infra["domain"]}"
             },
             :privileged => true
         }
