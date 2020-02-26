@@ -1,8 +1,8 @@
-version: '3.4'
+version: "3.4"
 
 services:
   artifactory:
-    image: docker.bintray.io/jfrog/artifactory-cpp-ce:latest
+    image: jfrog-docker-reg2.bintray.io/jfrog/artifactory-cpp-ce:latest
     volumes:
       - artifactory_data:/var/opt/jfrog/artifactory
       - artifactory_storage:/media
@@ -22,11 +22,11 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: 
+        constraints:
           - node.platform.os == linux
       labels:
         traefik.enable: "true"
-        traefik.port: 8081
+        traefik.port: 8082
         traefik.frontend.rule: "Host:artifactory.${INFRA_DOMAIN}"
 
 volumes:
@@ -42,7 +42,6 @@ volumes:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
       device: ":/${INFRA_FS_ROOT}/artifactory/storage"
-    
 # configs:
 #   binarystore.xml:
 #     file: "${INFRA_DIR}/config/binarystore.xml"
