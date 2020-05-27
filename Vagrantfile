@@ -7,11 +7,30 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     infra = YAML.load(File.read("config.yml"))
 
-    manager_ip = "10.10.10.10"
+    manager_ip = infra["machines"]["linux"]["ip"]
     config.vm.define "manager" do |manager|
-        manager.vm.box = "bento/ubuntu-18.04"
-
         machine = infra["machines"]["linux"]
+
+        ["hyperv", "virtualbox"].each do |provider|
+            manager.vm.provider provider do |vb|
+                vb.cpus = machine["cpus"]
+            end
+        end
+
+        manager.vm.provider "hyperv" do |vb, override|
+            override.vm.box = "generic/debian10"
+
+            vb.maxmemory = machine["memory"]
+        end
+        manager.vm.provider "virtualbox" do |vb, override|
+            # NOTE: Generic boxes can't be used because we
+            # need to setup private_network out of the box
+            override.vm.box = "debian/buster64"
+
+            vb.name = "jade-emperor"
+            vb.gui = false
+            vb.memory = machine["memory"]
+        end
 
         manager.vm.hostname = "jade-emperor"
         manager.vm.network :private_network,
@@ -30,28 +49,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             guest: 8022, host: 8022,
             id: "gitlab-ssh"
 
-        manager.vm.provider "virtualbox" do |vb|
-            vb.name = "jade-emperor"
-            vb.gui = false
-            vb.cpus = machine["cpus"]
-            vb.memory = machine["memory"]
-        end
-
         # Insert the custom ssh key into the Vagrant box
         # See [Problems] in the `README` on the problem of id_ed25519 in the Vagrant version 2.2.2
         manager.ssh.insert_key = false
         manager.ssh.private_key_path = [".ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
         manager.vm.provision "file", source: ".ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
-        manager.vm.provision "shell", inline: <<-EOC
-            sudo sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
-            sudo service ssh restart
+        manager.vm.provision "shell", privileged: true, inline: <<-EOC
+            sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
+            service ssh restart
         EOC
+
+        manager.vm.provision "shell", privileged: true, inline: <<-EOC
+            mkdir -p /opt/infra
+            chown vagrant: /opt/infra
+        EOC
+        deploy_provision = {
+            :type => "file",
+            :source => "infra",
+            :destination => "/opt/infra"
+        }
+        manager.vm.provision("deploy", deploy_provision)
 
         base_deploy_provision = {
             :type => "shell",
             :path => "infra/base/deploy.sh",
             :env => {
-                "INFRA_WORKDIR" => "/vagrant/infra/base",
+                "INFRA_WORKDIR" => "base",
 
                 "INFRA_MANAGER_IP" => "#{manager_ip}",
 
@@ -71,8 +94,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
 
         core_env = {
-            "INFRA_DIR" => "/opt/infra/core",
-            "INFRA_WORKDIR" => "/vagrant/infra/services/core",
+            "INFRA_WORKDIR" => "services/core",
 
             "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
@@ -101,8 +123,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         })
 
         ci_env = {
-            "INFRA_DIR" => "/opt/infra/ci",
-            "INFRA_WORKDIR" => "/vagrant/infra/services/ci",
+            "INFRA_WORKDIR" => "services/ci",
 
             "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
@@ -132,8 +153,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             dns_provision = {
                 :type => "shell",
                 :env => {
-                    "INFRA_DIR" => "/opt/infra/dns",
-                    "INFRA_WORKDIR" => "/vagrant/infra/services/dns",
+                    "INFRA_WORKDIR" => "services/dns",
 
                     "INFRA_IP" => "#{infra["ip"]}",
                     "INFRA_DOMAIN" => "#{infra["domain"]}",
@@ -153,10 +173,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     if infra["machines"]["windows"]
-        worker_ip = "10.10.10.11"
+        worker_ip = infra["machines"]["windows"]["ip"]
         config.vm.define "worker" do |worker|
             worker.vm.box = "StefanScherer/windows_2019_docker"
             worker.vm.communicator = "winrm"
+
+            worker.winrm.timeout = 30000
 
             machine = infra["machines"]["windows"]
 
@@ -164,11 +186,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             worker.vm.network :private_network,
                 ip: "#{worker_ip}"
 
+            ["hyperv", "virtualbox"].each do |provider|
+                worker.vm.provider provider do |vb|
+                    vb.cpus = machine["cpus"]
+                    # vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
+                end
+            end
+
+            worker.vm.provider "hyperv" do |vb|
+                vb.maxmemory = machine["memory"]
+            end
             worker.vm.provider "virtualbox" do |vb|
                 vb.name = "celestial-queen"
                 vb.gui = false
-
-                vb.cpus = machine["cpus"]
                 vb.memory = machine["memory"]
             end
 
