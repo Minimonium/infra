@@ -9,11 +9,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     manager_ip = infra["machines"]["linux"]["ip"]
     config.vm.define "manager" do |manager|
-        # NOTE: Generic boxes can't be used because we
-        # need to setup private_network out of the box
-        manager.vm.box = "debian/buster64"
-
         machine = infra["machines"]["linux"]
+
+        ["hyperv", "virtualbox"].each do |provider|
+            manager.vm.provider provider do |vb|
+                vb.cpus = machine["cpus"]
+            end
+        end
+
+        manager.vm.provider "hyperv" do |vb, override|
+            override.vm.box = "generic/debian10"
+
+            vb.maxmemory = machine["memory"]
+        end
+        manager.vm.provider "virtualbox" do |vb, override|
+            # NOTE: Generic boxes can't be used because we
+            # need to setup private_network out of the box
+            override.vm.box = "debian/buster64"
+
+            vb.name = "jade-emperor"
+            vb.gui = false
+            vb.memory = machine["memory"]
+        end
 
         manager.vm.hostname = "jade-emperor"
         manager.vm.network :private_network,
@@ -31,22 +48,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         manager.vm.network :forwarded_port,
             guest: 8022, host: 8022,
             id: "gitlab-ssh"
-
-        ["hyperv", "virtualbox"].each do |provider|
-            manager.vm.provider provider do |vb|
-                vb.cpus = machine["cpus"]
-                # vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
-            end
-        end
-
-        manager.vm.provider "hyperv" do |vb|
-            vb.maxmemory = machine["memory"]
-        end
-        manager.vm.provider "virtualbox" do |vb|
-            vb.name = "jade-emperor"
-            vb.gui = false
-            vb.memory = machine["memory"]
-        end
 
         # Insert the custom ssh key into the Vagrant box
         # See [Problems] in the `README` on the problem of id_ed25519 in the Vagrant version 2.2.2
