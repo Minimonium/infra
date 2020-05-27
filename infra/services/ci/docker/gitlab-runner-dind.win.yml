@@ -7,7 +7,7 @@ services:
     image: gitlab-runner-dind:1809
     command: ["register",
       "--non-interactive",
-      "--url", "http://gitlab.${INFRA_DOMAIN}",
+      "--url", "infra_gitlab",
       "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
       "--executor", "shell",
       "--shell", "powershell",

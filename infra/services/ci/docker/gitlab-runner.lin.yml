@@ -5,7 +5,7 @@ services:
     image: gitlab/gitlab-runner:alpine
     command: ["register",
       "--non-interactive",
-      "--url", "http://gitlab.${INFRA_DOMAIN}",
+      "--url", "infra_gitlab",
       "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
       "--executor", "docker",
       "--docker-image", "docker:stable",

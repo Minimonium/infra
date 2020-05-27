@@ -5,7 +5,7 @@ services:
     image: gitlab-runner:1809
     command: ["register",
       "--non-interactive",
-      "--url", "http://gitlab.${INFRA_DOMAIN}",
+      "--url", "infra_gitlab",
       "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
       "--executor", "docker-windows",
       "--docker-image", "mcr.microsoft.com/windows/servercore:1809",
