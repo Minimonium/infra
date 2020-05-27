@@ -15,8 +15,10 @@ services:
 
 machines:
   linux:
+    ip: 10.10.10.10
     cpus: 2
     memory: 4096
   # windows:
+  #   ip: 10.10.10.11
   #   cpus: 2
   #   memory: 4096

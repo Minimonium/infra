@@ -7,7 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     infra = YAML.load(File.read("config.yml"))
 
-    manager_ip = "10.10.10.10"
+    manager_ip = infra["machines"]["linux"]["ip"]
     config.vm.define "manager" do |manager|
         manager.vm.box = "bento/ubuntu-18.04"
 
@@ -30,11 +30,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             guest: 8022, host: 8022,
             id: "gitlab-ssh"
 
+        ["hyperv", "virtualbox"].each do |provider|
+            manager.vm.provider provider do |vb|
+                vb.cpus = machine["cpus"]
+                vb.memory = machine["memory"]
+
+                vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
+            end
+        end
+
         manager.vm.provider "virtualbox" do |vb|
             vb.name = "jade-emperor"
             vb.gui = false
-            vb.cpus = machine["cpus"]
-            vb.memory = machine["memory"]
         end
 
         # Insert the custom ssh key into the Vagrant box
@@ -153,10 +160,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     if infra["machines"]["windows"]
-        worker_ip = "10.10.10.11"
+        worker_ip = infra["machines"]["windows"]["ip"]
         config.vm.define "worker" do |worker|
             worker.vm.box = "StefanScherer/windows_2019_docker"
             worker.vm.communicator = "winrm"
+
+            worker.winrm.timeout = 30000
 
             machine = infra["machines"]["windows"]
 
@@ -164,12 +173,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             worker.vm.network :private_network,
                 ip: "#{worker_ip}"
 
-            worker.vm.provider "virtualbox" do |vb|
+            ["hyperv", "virtualbox"].each do |provider|
+                worker.vm.provider provider do |vb|
+                    vb.cpus = machine["cpus"]
+                    vb.memory = machine["memory"]
+
+                    vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
+                end
+            end
+
+            manager.vm.provider "virtualbox" do |vb|
                 vb.name = "celestial-queen"
                 vb.gui = false
-
-                vb.cpus = machine["cpus"]
-                vb.memory = machine["memory"]
             end
 
             base_deploy_provision = {
