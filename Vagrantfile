@@ -9,7 +9,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     manager_ip = infra["machines"]["linux"]["ip"]
     config.vm.define "manager" do |manager|
-        manager.vm.box = "generic/debian10"
+        # NOTE: Generic boxes can't be used because we
+        # need to setup private_network out of the box
+        manager.vm.box = "debian/buster64"
 
         machine = infra["machines"]["linux"]
 
