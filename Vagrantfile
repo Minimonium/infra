@@ -33,15 +33,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ["hyperv", "virtualbox"].each do |provider|
             manager.vm.provider provider do |vb|
                 vb.cpus = machine["cpus"]
-                vb.maxmemory = machine["memory"]
-
                 # vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
             end
         end
 
+        manager.vm.provider "hyperv" do |vb|
+            vb.maxmemory = machine["memory"]
+        end
         manager.vm.provider "virtualbox" do |vb|
             vb.name = "jade-emperor"
             vb.gui = false
+            vb.memory = machine["memory"]
         end
 
         # Insert the custom ssh key into the Vagrant box
@@ -184,15 +186,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             ["hyperv", "virtualbox"].each do |provider|
                 worker.vm.provider provider do |vb|
                     vb.cpus = machine["cpus"]
-                    vb.maxmemory = machine["memory"]
-
                     # vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
                 end
             end
 
-            manager.vm.provider "virtualbox" do |vb|
+            worker.vm.provider "hyperv" do |vb|
+                vb.maxmemory = machine["memory"]
+            end
+            worker.vm.provider "virtualbox" do |vb|
                 vb.name = "celestial-queen"
                 vb.gui = false
+                vb.memory = machine["memory"]
             end
 
             base_deploy_provision = {
