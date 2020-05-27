@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     manager_ip = infra["machines"]["linux"]["ip"]
     config.vm.define "manager" do |manager|
-        manager.vm.box = "bento/ubuntu-18.04"
+        manager.vm.box = "generic/debian10"
 
         machine = infra["machines"]["linux"]
 
@@ -33,9 +33,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ["hyperv", "virtualbox"].each do |provider|
             manager.vm.provider provider do |vb|
                 vb.cpus = machine["cpus"]
-                vb.memory = machine["memory"]
+                vb.maxmemory = machine["memory"]
 
-                vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
+                # vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
             end
         end
 
@@ -49,16 +49,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         manager.ssh.insert_key = false
         manager.ssh.private_key_path = [".ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
         manager.vm.provision "file", source: ".ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
-        manager.vm.provision "shell", inline: <<-EOC
-            sudo sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
-            sudo service ssh restart
+        manager.vm.provision "shell", privileged: true, inline: <<-EOC
+            sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
+            service ssh restart
         EOC
+
+        manager.vm.provision "shell", privileged: true, inline: <<-EOC
+            mkdir -p /opt/infra
+            chown vagrant: /opt/infra
+        EOC
+        deploy_provision = {
+            :type => "file",
+            :source => "infra",
+            :destination => "/opt/infra"
+        }
+        manager.vm.provision("deploy", deploy_provision)
 
         base_deploy_provision = {
             :type => "shell",
             :path => "infra/base/deploy.sh",
             :env => {
-                "INFRA_WORKDIR" => "/vagrant/infra/base",
+                "INFRA_WORKDIR" => "base",
 
                 "INFRA_MANAGER_IP" => "#{manager_ip}",
 
@@ -78,8 +89,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
 
         core_env = {
-            "INFRA_DIR" => "/opt/infra/core",
-            "INFRA_WORKDIR" => "/vagrant/infra/services/core",
+            "INFRA_WORKDIR" => "services/core",
 
             "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
@@ -108,8 +118,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         })
 
         ci_env = {
-            "INFRA_DIR" => "/opt/infra/ci",
-            "INFRA_WORKDIR" => "/vagrant/infra/services/ci",
+            "INFRA_WORKDIR" => "services/ci",
 
             "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
@@ -139,8 +148,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             dns_provision = {
                 :type => "shell",
                 :env => {
-                    "INFRA_DIR" => "/opt/infra/dns",
-                    "INFRA_WORKDIR" => "/vagrant/infra/services/dns",
+                    "INFRA_WORKDIR" => "services/dns",
 
                     "INFRA_IP" => "#{infra["ip"]}",
                     "INFRA_DOMAIN" => "#{infra["domain"]}",
@@ -176,9 +184,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             ["hyperv", "virtualbox"].each do |provider|
                 worker.vm.provider provider do |vb|
                     vb.cpus = machine["cpus"]
-                    vb.memory = machine["memory"]
+                    vb.maxmemory = machine["memory"]
 
-                    vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
+                    # vb.linked_clone = true if Gem::Version.new(Vagrant::VERSION) >= Gem::Version.new('1.8.0')
                 end
             end
 

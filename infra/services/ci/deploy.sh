@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Set up Working Directory
-mkdir -p ${INFRA_DIR}
-cp -r ${INFRA_WORKDIR}/. ${INFRA_DIR}
+export INFRA_DIR=/opt/infra/${INFRA_WORKDIR}
 
 # Fix line endings in case of the Windows host
 find ${INFRA_DIR} -type f | xargs sed -i 's/\r$//'

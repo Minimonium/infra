@@ -2,6 +2,8 @@
 
 echo "infra: Restoring..."
 
+export INFRA_DIR=/opt/infra/${INFRA_WORKDIR}
+
 docker service scale infra_gitlab=0
 
 docker-compose \
