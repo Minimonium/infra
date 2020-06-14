@@ -1,19 +1,28 @@
-version: '3.4'
+version: "3.4"
 
 # See https://gitlab.com/gitlab-org/gitlab-runner/issues/4295
 
 services:
   gitlab_runner_win_dind_registrator:
     image: gitlab-runner-dind:1809
-    command: ["register",
-      "--non-interactive",
-      "--url", "http://infra_gitlab",
-      "--registration-token", "${INFRA_GITLAB_RUNNER_TOKEN}",
-      "--executor", "shell",
-      "--shell", "powershell",
-      "--description", "black-tortoise",
-      "--tag-list", "windows,dind",
-      "--locked=false"]
+    command:
+      [
+        "register",
+        "--non-interactive",
+        "--url",
+        "http://gitlab.${INFRA_DOMAIN}",
+        "--registration-token",
+        "${INFRA_GITLAB_RUNNER_TOKEN}",
+        "--executor",
+        "shell",
+        "--shell",
+        "powershell",
+        "--description",
+        "black-tortoise",
+        "--tag-list",
+        "windows,dind",
+        "--locked=false",
+      ]
     volumes:
       - gitlab_runner_win_dind_config:C:\Users\build_user\:z
     networks:
