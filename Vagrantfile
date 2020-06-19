@@ -60,22 +60,35 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         EOC
 
         manager.vm.provision "shell", privileged: true, inline: <<-EOC
+            mkdir -p /tmp/infra
+            chown vagrant: /tmp/infra
             mkdir -p /opt/infra
             chown vagrant: /opt/infra
         EOC
+
+        # TODO: Use `before:` attribute
         deploy_provision = {
             :type => "file",
             :source => "infra",
-            :destination => "/opt/infra"
+            :destination => "/tmp/infra"
         }
-        manager.vm.provision("deploy", deploy_provision)
+        manager.vm.provision("preconfigure", deploy_provision)
+
+        configure_provision = {
+            :type => "shell",
+            :path => "infra/configure.sh",
+            :env => {
+                "INFRA_DOMAIN" => "#{infra["domain"]}",
+                "INFRA_IP" => "#{infra["ip"]}",
+            },
+            :privileged => true
+        }
+        manager.vm.provision("configure", configure_provision)
 
         base_deploy_provision = {
             :type => "shell",
             :path => "infra/base/deploy.sh",
             :env => {
-                "INFRA_WORKDIR" => "base",
-
                 "INFRA_MANAGER_IP" => "#{manager_ip}",
 
                 "INFRA_DOMAIN" => "#{infra["domain"]}"
@@ -94,8 +107,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
 
         core_env = {
-            "INFRA_WORKDIR" => "services/core",
-
             "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
 
@@ -123,8 +134,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         })
 
         ci_env = {
-            "INFRA_WORKDIR" => "services/ci",
-
             "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
 
@@ -153,8 +162,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             dns_provision = {
                 :type => "shell",
                 :env => {
-                    "INFRA_WORKDIR" => "services/dns",
-
                     "INFRA_IP" => "#{infra["ip"]}",
                     "INFRA_DOMAIN" => "#{infra["domain"]}",
 

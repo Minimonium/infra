@@ -1,9 +1,6 @@
 #!/bin/bash
 
-export INFRA_DIR=/opt/infra/${INFRA_WORKDIR}
-
-# Fix line endings in case of the Windows host
-find ${INFRA_DIR} -type f | xargs sed -i 's/\r$//'
+export INFRA_DIR=/opt/infra/base
 
 echo "infra: Installing Qemu..."
 source ${INFRA_DIR}/scripts/install-qemu.sh
@@ -19,4 +16,3 @@ source ${INFRA_DIR}/scripts/docker-swarm-init.sh
 
 echo "infra: Installing the Common File System Components..."
 source ${INFRA_DIR}/scripts/install-fs-commons.sh
-
