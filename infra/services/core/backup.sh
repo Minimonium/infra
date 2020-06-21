@@ -2,7 +2,7 @@
 
 echo "infra: Backuping..."
 
-export INFRA_DIR=/opt/infra/${INFRA_WORKDIR}
+export INFRA_DIR=/opt/infra/services/core
 
 docker service scale infra_gitlab=0
 

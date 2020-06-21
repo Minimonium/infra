@@ -11,25 +11,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define "manager" do |manager|
         machine = infra["machines"]["linux"]
 
-        ["hyperv", "virtualbox"].each do |provider|
-            manager.vm.provider provider do |vb|
-                vb.cpus = machine["cpus"]
-            end
-        end
-
         manager.vm.provider "hyperv" do |vb, override|
             override.vm.box = "generic/debian10"
 
+            override.ssh.username = "vagrant"
+            override.ssh.password = "vagrant"
+
             vb.maxmemory = machine["memory"]
+            vb.cpus = machine["cpus"]
         end
         manager.vm.provider "virtualbox" do |vb, override|
             # NOTE: Generic boxes can't be used because we
             # need to setup private_network out of the box
             override.vm.box = "debian/buster64"
 
+            override.ssh.insert_key = false
+            override.ssh.private_key_path = [".ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
+            override.vm.provision "file", source: ".ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
+            override.vm.provision "shell", privileged: true, inline: <<-EOC
+                sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
+                service ssh restart
+            EOC
+
             vb.name = "jade-emperor"
             vb.gui = false
             vb.memory = machine["memory"]
+            vb.cpus = machine["cpus"]
         end
 
         manager.vm.hostname = "jade-emperor"
@@ -51,31 +58,37 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         # Insert the custom ssh key into the Vagrant box
         # See [Problems] in the `README` on the problem of id_ed25519 in the Vagrant version 2.2.2
-        manager.ssh.insert_key = false
-        manager.ssh.private_key_path = [".ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
-        manager.vm.provision "file", source: ".ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
-        manager.vm.provision "shell", privileged: true, inline: <<-EOC
-            sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
-            service ssh restart
-        EOC
 
         manager.vm.provision "shell", privileged: true, inline: <<-EOC
+            mkdir -p /tmp/infra
+            chown vagrant: /tmp/infra
             mkdir -p /opt/infra
             chown vagrant: /opt/infra
         EOC
-        deploy_provision = {
+
+        # TODO: Use `before:` attribute
+        preconfigure_provision = {
             :type => "file",
             :source => "infra",
-            :destination => "/opt/infra"
+            :destination => "/tmp/infra"
         }
-        manager.vm.provision("deploy", deploy_provision)
+        manager.vm.provision("preconfigure", preconfigure_provision)
+
+        configure_provision = {
+            :type => "shell",
+            :path => "infra/configure.sh",
+            :env => {
+                "INFRA_DOMAIN" => "#{infra["domain"]}",
+                "INFRA_IP" => "#{infra["ip"]}",
+            },
+            :privileged => true
+        }
+        manager.vm.provision("configure", configure_provision)
 
         base_deploy_provision = {
             :type => "shell",
             :path => "infra/base/deploy.sh",
             :env => {
-                "INFRA_WORKDIR" => "base",
-
                 "INFRA_MANAGER_IP" => "#{manager_ip}",
 
                 "INFRA_DOMAIN" => "#{infra["domain"]}"
@@ -94,8 +107,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
 
         core_env = {
-            "INFRA_WORKDIR" => "services/core",
-
             "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
 
@@ -123,8 +134,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         })
 
         ci_env = {
-            "INFRA_WORKDIR" => "services/ci",
-
             "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
 
@@ -153,8 +162,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             dns_provision = {
                 :type => "shell",
                 :env => {
-                    "INFRA_WORKDIR" => "services/dns",
-
                     "INFRA_IP" => "#{infra["ip"]}",
                     "INFRA_DOMAIN" => "#{infra["domain"]}",
 
