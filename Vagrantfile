@@ -24,6 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             # NOTE: Generic boxes can't be used because we
             # need to setup private_network out of the box
             override.vm.box = "debian/buster64"
+            override.disksize.size = '60GB'
 
             override.ssh.insert_key = false
             override.ssh.private_key_path = [".ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
