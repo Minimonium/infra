@@ -10,6 +10,9 @@ cp -r ${INFRA_TMPDIR} ${INFRA_DIR}
 find ${INFRA_DIR} -type f | xargs sed -i 's/\r$//'
 
 # TODO: Move configs to a top level directory
+find ${INFRA_DIR}/base/config -type f | xargs sed -i "s,\${infra.domain},${INFRA_DOMAIN},"
+find ${INFRA_DIR}/base/config -type f | xargs sed -i "s,\${infra.ip},${INFRA_IP},"
+
 find ${INFRA_DIR}/services/ci/config -type f | xargs sed -i "s,\${infra.domain},${INFRA_DOMAIN},"
 find ${INFRA_DIR}/services/ci/config -type f | xargs sed -i "s,\${infra.ip},${INFRA_IP},"
 
