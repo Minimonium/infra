@@ -28,7 +28,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             override.vm.provision "shell", privileged: true, inline: <<-EOC
                 apt update
                 apt install -y parted cloud-guest-utils
-                parted rm 5
                 echo '+43GB,' | /sbin/sfdisk --force --move-data /dev/sda -N 2
                 growpart /dev/sda 1
             EOC
