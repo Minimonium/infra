@@ -6,6 +6,14 @@ Project to try out different local infrastructure options
 
 ## Prerequisites
 
+### Plugins
+
+```bash
+vagrant plugin install vagrant-disksize
+```
+
+### Configuration
+
 - Configure `config.yml`
 - Put ssh keys into the `.ssh` folder under the `id_rsa` name, e.g. `ssh-keygen -t rsa -b 4096 -f ./.ssh/id_rsa`
 - Configurate `infra/services/core/config/.htpasswd` for global admin password

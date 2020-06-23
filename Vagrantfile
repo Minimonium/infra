@@ -24,6 +24,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             # NOTE: Generic boxes can't be used because we
             # need to setup private_network out of the box
             override.vm.box = "debian/buster64"
+            override.disksize.size = '60GB'
+            override.vm.provision "shell", privileged: true, inline: <<-EOC
+                apt update
+                apt install -y parted cloud-guest-utils
+                echo '+43GB,' | /sbin/sfdisk --force --move-data /dev/sda -N 2
+                growpart /dev/sda 1
+            EOC
+            override.vm.provision "shell", run: "always", privileged: true, inline: <<-EOC
+                resize2fs /dev/sda1
+            EOC
 
             override.ssh.insert_key = false
             override.ssh.private_key_path = [".ssh/id_rsa", "~/.vagrant.d/insecure_private_key"]
