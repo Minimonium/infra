@@ -31,6 +31,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 parted rm 5
                 echo '+43GB,' | /sbin/sfdisk --force --move-data /dev/sda -N 2
                 growpart /dev/sda 1
+            EOC
+            override.vm.provision "shell", run: "always", privileged: true, inline: <<-EOC
                 resize2fs /dev/sda1
             EOC
 
