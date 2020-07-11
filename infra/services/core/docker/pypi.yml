@@ -3,11 +3,11 @@ version: "3.4"
 services:
   pypi:
     image: pypiserver/pypiserver:latest
-    volumes:
-      - pypi_packages:/data/packages
-    configs:
-      - source: ".htpasswd"
-        target: "/data/.htpasswd"
+    # volumes:
+    #   - pypi_packages:/data/packages
+    # configs:
+    #   - source: ".htpasswd"
+    #     target: "/data/.htpasswd"
     networks:
       - infra_network
     deploy:
