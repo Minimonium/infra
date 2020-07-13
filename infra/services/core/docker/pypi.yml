@@ -3,11 +3,10 @@ version: "3.4"
 services:
   pypi:
     image: pypiserver/pypiserver:latest
+    command: "-P /data/auth/.htpasswd /data/packages"
     volumes:
       - pypi_packages:/data/packages
-    # configs:
-    #   - source: ".htpasswd"
-    #     target: "/data/.htpasswd"
+      - ${INFRA_DIR}/config/pypi/auth:/data/auth
     networks:
       - infra_network
     deploy:
