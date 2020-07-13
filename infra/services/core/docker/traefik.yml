@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.4"
 
 services:
   traefik:
@@ -42,7 +42,5 @@ volumes:
       device: ":/${INFRA_FS_ROOT}/traefik/logs"
 
 configs:
-  .htpasswd:
-    file: "${INFRA_DIR}/config/.htpasswd"
   traefik.toml:
     file: "${INFRA_DIR}/config/traefik.toml"

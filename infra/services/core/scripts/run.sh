@@ -11,4 +11,5 @@ docker stack deploy \
 --compose-file ${INFRA_DIR}/docker/artifactory.yml \
 --compose-file ${INFRA_DIR}/docker/monitoring.yml \
 --compose-file ${INFRA_DIR}/docker/gitlab.yml \
+--compose-file ${INFRA_DIR}/docker/pypi.yml \
 infra
