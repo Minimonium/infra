@@ -3,7 +3,7 @@ version: "3.4"
 services:
   pypi:
     image: pypiserver/pypiserver:latest
-    command: "-P /data/auth/.htpasswd /data/packages"
+    command: "-o -P /data/auth/.htpasswd /data/packages"
     volumes:
       - pypi_packages:/data/packages
       - ${INFRA_DIR}/config/pypi/auth:/data/auth
