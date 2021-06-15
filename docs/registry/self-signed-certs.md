@@ -10,7 +10,13 @@ openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout infra.key -out infra.c
 
 > Note that we use `-nodes` to not require a password to not pass it to Traefik
 
-## Usage
+## Automatic
+
+* Copy the certificates to the `infra/services/core/config/certs/`.
+
+* Run `vagrant provision --provision-with=core-deploy,core`.
+
+## Manual Usage
 
 To use the Registry with self-signed certificates it's important to add them to each node:
 
