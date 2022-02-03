@@ -2,6 +2,8 @@
 
 export INFRA_DIR=/opt/infra/base
 
+apt-get --allow-releaseinfo-change-suite update
+
 echo "infra: Installing Qemu..."
 source ${INFRA_DIR}/scripts/install-qemu.sh
 
