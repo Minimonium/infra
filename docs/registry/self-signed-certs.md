@@ -5,7 +5,7 @@
 To create a certificate - run:
 
 ```bash
-openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout infra.key -out infra.crt -days 365
+openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout infra.key -out infra.crt -days 365 -addext "subjectAltName = DNS:*.${infra.domain}"
 ```
 
 > Note that we use `-nodes` to not require a password to not pass it to Traefik
