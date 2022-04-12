@@ -19,10 +19,11 @@ services:
           - node.platform.os == linux
 
   registry_ui:
-    image: joxit/docker-registry-ui:static
+    image: joxit/docker-registry-ui:2
     environment:
+      - "SINGLE_REGISTRY=true"
       - "REGISTRY_TITLE=Infra Registry"
-      - "REGISTRY_URL=http://infra_registry:5000"
+      - "NGINX_PROXY_PASS_URL=http://infra_registry:5000"
       - "DELETE_IMAGES=true"
     networks:
       - infra_network
