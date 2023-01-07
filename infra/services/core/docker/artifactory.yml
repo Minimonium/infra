@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   artifactory:
-    image: jfrog-docker-reg2.bintray.io/jfrog/artifactory-cpp-ce:latest
+    image: docker.bintray.io/jfrog/artifactory-cpp-ce:latest
     volumes:
       - artifactory_data:/var/opt/jfrog/artifactory
       - artifactory_storage:/media
