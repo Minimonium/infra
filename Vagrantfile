@@ -24,11 +24,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             # NOTE: Generic boxes can't be used because we
             # need to setup private_network out of the box
             override.vm.box = "debian/buster64"
-            override.disksize.size = '60GB'
+            override.disksize.size = '100GB'
             override.vm.provision "shell", privileged: true, inline: <<-EOC
                 apt update
                 apt install -y parted cloud-guest-utils
-                echo '+43GB,' | /sbin/sfdisk --force --move-data /dev/sda -N 2
+                echo '+83GB,' | /sbin/sfdisk --force --move-data /dev/sda -N 2
                 growpart /dev/sda 1
             EOC
             override.vm.provision "shell", run: "always", privileged: true, inline: <<-EOC
