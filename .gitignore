@@ -9,3 +9,4 @@
 /config.yml
 .htpasswd
 gitlab.rb
+taiga.env

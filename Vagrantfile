@@ -117,8 +117,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end
 
         core_env = {
-            "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
+            "INFRA_IP" => "#{infra["ip"]}",
 
             "INFRA_FS_SERVER" => "#{infra["fs"]["server"]}",
             "INFRA_FS_ROOT" => "#{infra["fs"]["root"]}"
@@ -144,8 +144,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         })
 
         ci_env = {
-            "INFRA_IP" => "#{infra["ip"]}",
             "INFRA_DOMAIN" => "#{infra["domain"]}",
+            "INFRA_IP" => "#{infra["ip"]}",
 
             "INFRA_GITLAB_RUNNER_TOKEN" => "#{infra["services"]["gitlab-runner"]["token"]}",
 
@@ -172,8 +172,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             dns_provision = {
                 :type => "shell",
                 :env => {
-                    "INFRA_IP" => "#{infra["ip"]}",
                     "INFRA_DOMAIN" => "#{infra["domain"]}",
+                    "INFRA_IP" => "#{infra["ip"]}",
 
                     "INFRA_FS_SERVER" => "#{infra["fs"]["server"]}",
                     "INFRA_FS_ROOT" => "#{infra["fs"]["root"]}"
