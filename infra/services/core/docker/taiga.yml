@@ -219,13 +219,13 @@ volumes:
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":/${INFRA_FS_ROOT}/taiga/rabbitmq/async"
+      device: ":/${INFRA_FS_ROOT}/taiga/rabbitmq-async"
   taiga-events-rabbitmq-data:
     driver: local
     driver_opts:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
-      device: ":/${INFRA_FS_ROOT}/taiga/rabbitmq/events"
+      device: ":/${INFRA_FS_ROOT}/taiga/rabbitmq-events"
 
 networks:
   taiga:
