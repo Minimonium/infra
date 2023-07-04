@@ -27,9 +27,7 @@ services:
     volumes:
       - taiga-db-data:/var/lib/postgresql/data
     networks:
-      - infra_network:
-          aliases:
-            - taiga-db
+      - infra_network
 
   taiga-back:
     image: taigaio/taiga-back:latest
