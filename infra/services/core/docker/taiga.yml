@@ -39,8 +39,6 @@ x-volumes:
 services:
   taiga-db:
     image: postgres:12.3
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     environment:
       POSTGRES_DB: "taiga"
       POSTGRES_USER: "${POSTGRES_USER}"
@@ -59,8 +57,6 @@ services:
 
   taiga-back:
     image: taigaio/taiga-back:latest
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     environment: *default-back-environment
     volumes: *default-back-volumes
     networks:
@@ -69,8 +65,6 @@ services:
 
   taiga-async:
     image: taigaio/taiga-back:latest
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
     environment: *default-back-environment
     volumes: *default-back-volumes
@@ -80,8 +74,6 @@ services:
 
   taiga-async-rabbitmq:
     image: rabbitmq:3.8-management-alpine
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     environment:
       RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
       RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
@@ -102,8 +94,6 @@ services:
 
   taiga-front:
     image: taigaio/taiga-front:latest
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     environment:
       TAIGA_URL: "${TAIGA_SCHEME}://${TAIGA_DOMAIN}"
       TAIGA_WEBSOCKETS_URL: "${WEBSOCKETS_SCHEME}://${TAIGA_DOMAIN}"
@@ -116,8 +106,6 @@ services:
 
   taiga-events:
     image: taigaio/taiga-events:latest
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     environment:
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
@@ -128,8 +116,6 @@ services:
 
   taiga-events-rabbitmq:
     image: rabbitmq:3.8-management-alpine
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     environment:
       RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
       RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
@@ -150,8 +136,6 @@ services:
 
   taiga-protected:
     image: taigaio/taiga-protected:latest
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     environment:
       MAX_AGE: "${ATTACHMENTS_MAX_AGE}"
       SECRET_KEY: "${SECRET_KEY}"
@@ -161,8 +145,6 @@ services:
 
   taiga-gateway:
     image: nginx:1.19-alpine
-    env_file:
-      - ${INFRA_DIR}/config/taiga.env
     ports:
       - "9000:80"
     labels:
