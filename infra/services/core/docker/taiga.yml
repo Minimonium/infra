@@ -66,13 +66,6 @@ services:
     networks:
       - taiga
       - infra_network
-    depends_on:
-      taiga-db:
-        condition: service_healthy
-      taiga-events-rabbitmq:
-        condition: service_healthy
-      taiga-async-rabbitmq:
-        condition: service_healthy
 
   taiga-async:
     image: taigaio/taiga-back:latest
@@ -84,13 +77,6 @@ services:
     networks:
       - taiga
       - infra_network
-    depends_on:
-      taiga-db:
-        condition: service_healthy
-      taiga-events-rabbitmq:
-        condition: service_healthy
-      taiga-async-rabbitmq:
-        condition: service_healthy
 
   taiga-async-rabbitmq:
     image: rabbitmq:3.8-management-alpine
@@ -143,9 +129,6 @@ services:
     networks:
       - taiga
       - infra_network
-    depends_on:
-      taiga-events-rabbitmq:
-        condition: service_healthy
 
   taiga-events-rabbitmq:
     image: rabbitmq:3.8-management-alpine
