@@ -122,7 +122,10 @@ services:
       TAIGA_URL: "${TAIGA_SCHEME}://${TAIGA_DOMAIN}"
       TAIGA_WEBSOCKETS_URL: "${WEBSOCKETS_SCHEME}://${TAIGA_DOMAIN}"
       TAIGA_SUBPATH: "${SUBPATH}"
-      # ...your customizations go here
+    labels:
+      traefik.enable: "true"
+      traefik.port: 9000
+      traefik.frontend.rule: "Host:taiga.${INFRA_DOMAIN}"
     networks:
       - taiga
       - infra_network
