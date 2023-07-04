@@ -3,7 +3,7 @@ version: "3.5"
 x-environment:
   &default-back-environment
   POSTGRES_DB: "taiga"
-  POSTGRES_HOST: "infra_taiga-db"
+  POSTGRES_HOST: "http://infra_taiga-db"
 
 x-volumes:
   &default-back-volumes
