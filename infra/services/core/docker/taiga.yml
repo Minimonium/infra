@@ -28,7 +28,6 @@ services:
     volumes:
       - taiga-db-data:/var/lib/postgresql/data
     networks:
-      - taiga
       - infra_network
 
   taiga-back:
@@ -38,7 +37,6 @@ services:
     environment: *default-back-environment
     volumes: *default-back-volumes
     networks:
-      - taiga
       - infra_network
 
   taiga-async:
@@ -49,7 +47,6 @@ services:
     environment: *default-back-environment
     volumes: *default-back-volumes
     networks:
-      - taiga
       - infra_network
 
   taiga-async-rabbitmq:
@@ -71,7 +68,6 @@ services:
     volumes:
       - taiga-async-rabbitmq-data:/var/lib/rabbitmq
     networks:
-      - taiga
       - infra_network
 
   taiga-front:
@@ -83,7 +79,6 @@ services:
       TAIGA_WEBSOCKETS_URL: "${WEBSOCKETS_SCHEME}://${TAIGA_DOMAIN}"
       TAIGA_SUBPATH: "${SUBPATH}"
     networks:
-      - taiga
       - infra_network
     # volumes:
     #   - ./conf.json:/usr/share/nginx/html/conf.json
@@ -97,7 +92,6 @@ services:
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
       TAIGA_SECRET_KEY: "${SECRET_KEY}"
     networks:
-      - taiga
       - infra_network
 
   taiga-events-rabbitmq:
@@ -119,7 +113,6 @@ services:
     volumes:
       - taiga-events-rabbitmq-data:/var/lib/rabbitmq
     networks:
-      - taiga
       - infra_network
 
   taiga-protected:
@@ -130,7 +123,6 @@ services:
       MAX_AGE: "${ATTACHMENTS_MAX_AGE}"
       SECRET_KEY: "${SECRET_KEY}"
     networks:
-      - taiga
       - infra_network
 
   taiga-gateway:
@@ -148,7 +140,6 @@ services:
       - taiga-static-data:/taiga/static
       - taiga-media-data:/taiga/media
     networks:
-      - taiga
       - infra_network
     depends_on:
       - taiga-front
@@ -186,6 +177,3 @@ volumes:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
       device: ":/${INFRA_FS_ROOT}/taiga/rabbitmq-events"
-
-networks:
-  taiga:
