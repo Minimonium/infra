@@ -12,4 +12,5 @@ docker stack deploy \
 --compose-file ${INFRA_DIR}/docker/monitoring.yml \
 --compose-file ${INFRA_DIR}/docker/gitlab.yml \
 --compose-file ${INFRA_DIR}/docker/pypi.yml \
+--compose-file ${INFRA_DIR}/docker/taiga.yml \
 infra
