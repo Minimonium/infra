@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.5"
 
 services:
   gitlab:
@@ -21,7 +21,7 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: 
+        constraints:
           - node.platform.os == linux
           # Since we need the 22 port and traefik doesn't support non HTTP traffic we set the gitlab on the role
           - node.role == manager
@@ -41,7 +41,7 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: 
+        constraints:
           - node.platform.os == linux
   # postgres:
   #   image: "postgres:9.6-alpine"
