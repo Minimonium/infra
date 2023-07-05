@@ -3,7 +3,7 @@ version: "3.5"
 x-environment:
   &default-back-environment
   POSTGRES_DB: "taiga"
-  POSTGRES_HOST: "taiga-db"
+  POSTGRES_HOST: "infra_taiga-db"
 
 x-volumes:
   &default-back-volumes
@@ -52,11 +52,6 @@ services:
     image: rabbitmq:3.8-management-alpine
     env_file:
       - ${INFRA_DIR}/config/taiga.env
-    environment:
-      RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
-      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
-      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASS}"
-      RABBITMQ_DEFAULT_VHOST: "${RABBITMQ_VHOST}"
     hostname: "taiga-async-rabbitmq"
     healthcheck:
       test: rabbitmq-diagnostics -q ping
@@ -73,10 +68,6 @@ services:
     image: taigaio/taiga-front:latest
     env_file:
       - ${INFRA_DIR}/config/taiga.env
-    environment:
-      TAIGA_URL: "${TAIGA_SCHEME}://${TAIGA_DOMAIN}"
-      TAIGA_WEBSOCKETS_URL: "${WEBSOCKETS_SCHEME}://${TAIGA_DOMAIN}"
-      TAIGA_SUBPATH: "${SUBPATH}"
     networks:
       - infra_network
     # volumes:
@@ -86,10 +77,6 @@ services:
     image: taigaio/taiga-events:latest
     env_file:
       - ${INFRA_DIR}/config/taiga.env
-    environment:
-      RABBITMQ_USER: "${RABBITMQ_USER}"
-      RABBITMQ_PASS: "${RABBITMQ_PASS}"
-      TAIGA_SECRET_KEY: "${SECRET_KEY}"
     networks:
       - infra_network
 
@@ -97,11 +84,6 @@ services:
     image: rabbitmq:3.8-management-alpine
     env_file:
       - ${INFRA_DIR}/config/taiga.env
-    environment:
-      RABBITMQ_ERLANG_COOKIE: "${RABBITMQ_ERLANG_COOKIE}"
-      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
-      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASS}"
-      RABBITMQ_DEFAULT_VHOST: "${RABBITMQ_VHOST}"
     hostname: "taiga-events-rabbitmq"
     healthcheck:
       test: rabbitmq-diagnostics -q ping
@@ -118,9 +100,6 @@ services:
     image: taigaio/taiga-protected:latest
     env_file:
       - ${INFRA_DIR}/config/taiga.env
-    environment:
-      MAX_AGE: "${ATTACHMENTS_MAX_AGE}"
-      SECRET_KEY: "${SECRET_KEY}"
     networks:
       - infra_network
 
