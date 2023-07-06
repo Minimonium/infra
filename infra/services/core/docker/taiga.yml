@@ -64,6 +64,11 @@ services:
       - ${INFRA_DIR}/config/taiga.env
     networks:
       - infra_network
+    labels:
+      traefik.enable: "true"
+      traefik.port: 80
+      traefik.frontend.entryPoints: "https,http"
+      traefik.frontend.rule: "Host:taiga.${INFRA_DOMAIN}"
     # volumes:
     #   - ./conf.json:/usr/share/nginx/html/conf.json
 
@@ -101,11 +106,6 @@ services:
     image: nginx:1.19-alpine
     env_file:
       - ${INFRA_DIR}/config/taiga.env
-    labels:
-      traefik.enable: "true"
-      traefik.port: 80
-      traefik.frontend.entryPoints: "https,http"
-      traefik.frontend.rule: "Host:taiga.${INFRA_DOMAIN}"
     volumes:
       - taiga-static-data:/taiga/static
       - taiga-media-data:/taiga/media
