@@ -101,11 +101,9 @@ services:
     image: nginx:1.19-alpine
     env_file:
       - ${INFRA_DIR}/config/taiga.env
-    ports:
-      - "9000:80"
     labels:
       traefik.enable: "true"
-      traefik.port: 9000
+      traefik.port: 80
       traefik.frontend.rule: "Host:taiga.${INFRA_DOMAIN}"
     volumes:
       - taiga-static-data:/taiga/static
