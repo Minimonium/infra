@@ -20,10 +20,10 @@ services:
     environment: *default-back-environment
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U taiga"]
-      interval: 2s
+      interval: 30s
       timeout: 15s
       retries: 5
-      start_period: 3s
+      start_period: 1m
     volumes:
       - taiga-db-data:/var/lib/postgresql/data
     networks:
