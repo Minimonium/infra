@@ -64,11 +64,6 @@ services:
       - ${INFRA_DIR}/config/taiga.env
     networks:
       - infra_network
-    labels:
-      traefik.enable: "true"
-      traefik.port: 80
-      traefik.frontend.entryPoints: "https,http"
-      traefik.frontend.rule: "Host:taiga.${INFRA_DOMAIN}"
     # volumes:
     #   - ./conf.json:/usr/share/nginx/html/conf.json
 
@@ -112,6 +107,20 @@ services:
       - ${INFRA_DIR}/config/taiga.conf:/etc/nginx/conf.d/default.conf
     networks:
       - infra_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.platform.os == linux
+          # Since we need the 22 port and traefik doesn't support non HTTP traffic we set the gitlab on the role
+          - node.role == manager
+      labels:
+        traefik.enable: "true"
+        traefik.port: 80
+        traefik.frontend.rule: "Host:taiga.${INFRA_DOMAIN}"
 
 volumes:
   taiga-static-data:
