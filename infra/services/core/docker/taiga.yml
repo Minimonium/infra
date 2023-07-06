@@ -103,7 +103,7 @@ services:
       - ${INFRA_DIR}/config/taiga.env
     labels:
       traefik.enable: "true"
-      traefik.port: 80
+      traefik.port: 9000
       traefik.frontend.rule: "Host:taiga.${INFRA_DOMAIN}"
     volumes:
       - taiga-static-data:/taiga/static
