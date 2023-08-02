@@ -7,7 +7,7 @@ services:
       - registry_data:/var/lib/registry
       - ${INFRA_DIR}/config/registry/config.yml:/etc/docker/registry/config.yml
     configs:
-      - source: ".htpasswd"
+      - source: ".htpasswd-registry"
         target: "/auth/.htpasswd"
     networks:
       - infra_network
@@ -50,3 +50,7 @@ volumes:
       type: nfs4
       o: "addr=${INFRA_FS_SERVER}"
       device: ":/${INFRA_FS_ROOT}/registry/data"
+
+configs:
+  .htpasswd-registry:
+    file: "${INFRA_DIR}/config/registry/auth/.htpasswd"
