@@ -6,7 +6,9 @@ services:
     volumes:
       - registry_data:/var/lib/registry
       - ${INFRA_DIR}/config/registry/config.yml:/etc/docker/registry/config.yml
-      - ${INFRA_DIR}/config/registry/auth:/auth
+    configs:
+      - source: ".htpasswd"
+        target: "/auth/.htpasswd"
     networks:
       - infra_network
     deploy:
