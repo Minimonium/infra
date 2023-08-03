@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "infra: Backuping..."
+echo "infra: Backup..."
 
 export INFRA_DIR=/opt/infra/services/core
 

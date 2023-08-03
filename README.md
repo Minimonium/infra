@@ -46,7 +46,7 @@ vagrant provision --provision-with=ci-deploy,ci
 To fix any problems try to reprovision as:
 
 ```bash
-vagrant provision --provision-with=core-deploy,core
+vagrant provision --provision-with=preconfigure,configure,core
 vagrant provision --provision-with=dns
 ```
 
@@ -71,7 +71,7 @@ vagrant provision --provision-with=dns
 - base-deploy
 - fs-stub-deploy [optional]
 - core:
-  - core-deploy
+  - core-install
   - core
   - core-backup
   - core-restore

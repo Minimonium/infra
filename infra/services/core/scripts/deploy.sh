@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "infra: Running..."
+echo "infra: Deploying..."
 
 docker stack deploy \
 --compose-file ${INFRA_DIR}/docker/base.yml \

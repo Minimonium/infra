@@ -1,0 +1,60 @@
+version: "3.5"
+
+x-environment:
+  &default-back-environment
+  POSTGRES_DB: "taiga"
+  POSTGRES_HOST: "infra_taiga-db"
+
+x-volumes:
+  &default-back-volumes
+  # These volumens will be used by taiga-back and taiga-async.
+  - taiga-static-data:/taiga-back/static
+  - taiga-media-data:/taiga-back/media
+  # - ./config.py:/taiga-back/settings/config.py
+
+services:
+  taiga-manage:
+    image: taigaio/taiga-back:latest
+    env_file:
+      - ${INFRA_DIR}/config/taiga.env
+    environment: *default-back-environment
+    volumes: *default-back-volumes
+    networks:
+      - infra_network
+    entrypoint: "python manage.py"
+
+networks:
+  infra_network:
+    external: true
+
+volumes:
+  taiga-static-data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/taiga/static"
+  taiga-media-data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/taiga/media"
+  taiga-db-data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/taiga/db"
+  taiga-async-rabbitmq-data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/taiga/rabbitmq-async"
+  taiga-events-rabbitmq-data:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: "addr=${INFRA_FS_SERVER}"
+      device: ":/${INFRA_FS_ROOT}/taiga/rabbitmq-events"
