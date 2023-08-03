@@ -2,7 +2,7 @@
 
 echo "infra: Regenerate Taiga environment..."
 
-set -o allexport && source ${INFRA_DIR}/scripts/taiga-conf.sh && set +o allexport
+set -o allexport && source ${INFRA_DIR}/config/taiga-conf.sh && set +o allexport
 
 OUTPUT_FILE="${INFRA_DIR}/config/taiga.env"
 touch ${OUTPUT_FILE}
