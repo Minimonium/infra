@@ -10,3 +10,4 @@
 .htpasswd
 gitlab.rb
 taiga.env
+taiga-conf.sh

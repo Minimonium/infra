@@ -121,6 +121,7 @@ services:
         traefik.enable: "true"
         traefik.port: 80
         traefik.frontend.rule: "Host:taiga.${INFRA_DOMAIN}"
+        traefik.frontend.passHostHeader: "true"
 
 volumes:
   taiga-static-data:

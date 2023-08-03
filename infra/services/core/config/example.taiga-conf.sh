@@ -1,17 +1,11 @@
 # Taiga's URLs - Variables to define where Taiga should be served
 TAIGA_SCHEME=http  # serve Taiga using "http" or "https" (secured) connection
 TAIGA_DOMAIN=taiga.${infra.domain}  # Taiga's base URL
-TAIGA_URL="${TAIGA_SCHEME}://${TAIGA_DOMAIN}"
-TAIGA_SITES_SCHEME=${TAIGA_SCHEME}
-TAIGA_SITES_DOMAIN=${TAIGA_DOMAIN}
 SUBPATH="" # it'll be appended to the TAIGA_DOMAIN (use either "" or a "/subpath")
-TAIGA_SUBPATH=${SUBPATH}
 WEBSOCKETS_SCHEME=ws  # events connection protocol (use either "ws" or "wss")
-TAIGA_WEBSOCKETS_URL="${WEBSOCKETS_SCHEME}://${TAIGA_DOMAIN}"
 
 # Taiga's Secret Key - Variable to provide cryptographic signing
-SECRET_KEY="taiga-${infra.secret}-key"  # Please, change it to an unpredictable value!!
-TAIGA_SECRET_KEY=${SECRET_KEY}
+SECRET_KEY="taiga-secret-key"  # Please, change it to an unpredictable value!!
 
 # Taiga's Database settings - Variables to create the Taiga database and connect to it
 POSTGRES_USER=taiga  # user to connect to PostgreSQL
@@ -19,29 +13,23 @@ POSTGRES_PASSWORD=taiga  # database user's password
 
 # Taiga's SMTP settings - Variables to send Taiga's emails to the users
 EMAIL_BACKEND_TYPE=console  # use an SMTP server or display the emails in the console (either "smtp" or "console")
-EMAIL_BACKEND="django.core.mail.backends.${EMAIL_BACKEND_TYPE}.EmailBackend"
 EMAIL_HOST=smtp.host.example.com  # SMTP server address
 EMAIL_PORT=587   # default SMTP port
 EMAIL_HOST_USER=user  # user to connect the SMTP server
 EMAIL_HOST_PASSWORD=password  # SMTP user's password
 EMAIL_DEFAULT_FROM=changeme@example.com  # default email address for the automated emails
-DEFAULT_FROM_EMAIL=${EMAIL_DEFAULT_FROM}
 # EMAIL_USE_TLS/EMAIL_USE_SSL are mutually exclusive (only set one of those to True)
 EMAIL_USE_TLS=True  # use TLS (secure) connection with the SMTP server
 EMAIL_USE_SSL=False  # use implicit TLS (secure) connection with the SMTP server
 
 # Taiga's RabbitMQ settings - Variables to leave messages for the realtime and asynchronous events
 RABBITMQ_USER=taiga  # user to connect to RabbitMQ
-RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
 RABBITMQ_PASS=taiga  # RabbitMQ user's password
-RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
 RABBITMQ_VHOST=taiga  # RabbitMQ container name
-RABBITMQ_DEFAULT_VHOST=${RABBITMQ_VHOST}
 RABBITMQ_ERLANG_COOKIE=secret-erlang-cookie  # unique value shared by any connected instance of RabbitMQ
 
 # Taiga's Attachments - Variable to define how long the attachments will be accesible
 ATTACHMENTS_MAX_AGE=360  # token expiration date (in seconds)
-MAX_AGE=${ATTACHMENTS_MAX_AGE}
 
 # Taiga's Telemetry - Variable to enable or disable the anonymous telemetry
 ENABLE_TELEMETRY=false

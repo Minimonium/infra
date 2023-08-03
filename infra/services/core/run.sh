@@ -4,8 +4,8 @@ echo "infra: Starting..."
 
 export INFRA_DIR=/opt/infra/services/core
 
-docker network create -d overlay --attachable infra_network
-
+source ${INFRA_DIR}/scripts/create-network.sh
+source ${INFRA_DIR}/scripts/regenerate-taiga-env.sh
 source ${INFRA_DIR}/scripts/run.sh
 
 echo "infra: Success!"
