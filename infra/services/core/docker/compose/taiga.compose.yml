@@ -4,6 +4,7 @@ x-environment:
   &default-back-environment
   POSTGRES_DB: "taiga"
   POSTGRES_HOST: "infra_taiga-db"
+  DJANGO_SUPERUSER_PASSWORD: "taiga"
 
 x-volumes:
   &default-back-volumes
