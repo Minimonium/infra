@@ -119,6 +119,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         core_env = {
             "INFRA_DOMAIN" => "#{infra["domain"]}",
             "INFRA_IP" => "#{infra["ip"]}",
+            "INFRA_EMAIL" => "#{infra["email"]}"
 
             "INFRA_FS_SERVER" => "#{infra["fs"]["server"]}",
             "INFRA_FS_ROOT" => "#{infra["fs"]["root"]}"

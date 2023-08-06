@@ -1,5 +1,6 @@
 domain: infra.local
 ip: 192.168.0.150
+email: infra@example.com
 
 optional:
   dns: yes
