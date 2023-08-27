@@ -101,6 +101,8 @@ services:
     image: nginx:1.19-alpine
     env_file:
       - ${INFRA_DIR}/config/taiga.env
+    environment:
+      RAILS_TRUSTED_PROXIES: ['127.0.0.1', '::1', 'traefik']
     volumes:
       - taiga-static-data:/taiga/static
       - taiga-media-data:/taiga/media
