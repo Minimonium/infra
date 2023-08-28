@@ -4,6 +4,7 @@ x-environment:
   &default-back-environment
   POSTGRES_DB: "taiga"
   POSTGRES_HOST: "infra_taiga-db"
+  CSRF_TRUSTED_ORIGINS: "['http://taiga.${INFRA_DOMAIN}']"
 
 x-volumes:
   &default-back-volumes
@@ -101,8 +102,6 @@ services:
     image: nginx:1.19-alpine
     env_file:
       - ${INFRA_DIR}/config/taiga.env
-    environment:
-       - CSRF_TRUSTED_ORIGINS = ['http://taiga.${INFRA_DOMAIN}']
     volumes:
       - taiga-static-data:/taiga/static
       - taiga-media-data:/taiga/media
