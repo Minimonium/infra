@@ -1,11 +1,10 @@
 version: "3.5"
 
-x-environment:
-  &default-back-environment
+x-environment: &default-back-environment
   POSTGRES_DB: "taiga"
   POSTGRES_HOST: "infra_taiga-db"
-  CSRF_COOKIE_SECURE: False
-  SESSION_COOKIE_SECURE: False
+  CSRF_COOKIE_SECURE: "False"
+  SESSION_COOKIE_SECURE: "False"
 
 x-volumes:
   &default-back-volumes
