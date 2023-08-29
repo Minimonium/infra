@@ -62,6 +62,7 @@ vagrant provision --provision-with=dns
 | Artifactory    | Storage  | Binaries          |
 | Gitlab         | Storage  | Sources           |
 | Registry       | Storage  | Containers        |
+| Taiga          | Storage  | Management        |
 | Gitlab Runners | CI       | CI                |
 | DNSMasq        | Optional | DNS               |
 | NFS            | Optional | File System       |

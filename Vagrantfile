@@ -144,11 +144,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             :run => "never"
         })
 
-        manager.vm.provision "taiga-createuser", core_provision.merge({
-            :path => "infra/services/core/taiga-createuser.sh",
-            :run => "never"
-        })
-
         ci_env = {
             "INFRA_DOMAIN" => "#{infra["domain"]}",
             "INFRA_IP" => "#{infra["ip"]}",
