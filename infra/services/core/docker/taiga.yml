@@ -4,7 +4,8 @@ x-environment:
   &default-back-environment
   POSTGRES_DB: "taiga"
   POSTGRES_HOST: "infra_taiga-db"
-  CSRF_TRUSTED_ORIGINS: "['http://taiga.${INFRA_DOMAIN}']"
+  CSRF_COOKIE_SECURE: False
+  SESSION_COOKIE_SECURE: False
 
 x-volumes:
   &default-back-volumes

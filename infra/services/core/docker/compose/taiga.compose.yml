@@ -4,6 +4,8 @@ x-environment:
   &default-back-environment
   POSTGRES_DB: "taiga"
   POSTGRES_HOST: "infra_taiga-db"
+  CSRF_COOKIE_SECURE: False
+  SESSION_COOKIE_SECURE: False
   DJANGO_SUPERUSER_PASSWORD: "taiga"
 
 x-volumes:
