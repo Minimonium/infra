@@ -5,13 +5,13 @@ x-environment: &default-back-environment
   POSTGRES_HOST: "infra_taiga-db"
   CSRF_COOKIE_SECURE: "False"
   SESSION_COOKIE_SECURE: "False"
-  DJANGO_SUPERUSER_PASSWORD: "taiga"
 
 x-volumes:
   &default-back-volumes
   # These volumens will be used by taiga-back and taiga-async.
   - taiga-static-data:/taiga-back/static
   - taiga-media-data:/taiga-back/media
+  - taiga-backup:/media/backup
   # - ./config.py:/taiga-back/settings/config.py
 
 services:
