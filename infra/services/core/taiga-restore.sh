@@ -15,7 +15,7 @@ docker service scale infra_taiga-back=0 > /dev/null
 export TAIGA_DB_CONTAINER=$(docker container ps | grep infra_taiga-db | awk '{print $1}')
 docker exec ${TAIGA_DB_CONTAINER} bash -c 'BACKUP_FILE=$(find /media/backup/*_taiga-db-backup.sql) && \
     chown $(id -u):$(id -g) ${BACKUP_FILE} && \
-    psql -U taiga taiga < ${BACKUP_FILE}'
+    pg_restore -c -U taiga -d taiga < ${BACKUP_FILE}'
 
 docker service scale infra_taiga-back=1 > /dev/null
 export TAIGA_BACK_CONTAINER=$(docker container ps | grep infra_taiga-back | awk '{print $1}')
