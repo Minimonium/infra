@@ -15,7 +15,7 @@ docker service scale infra_taiga-gateway=0 > /dev/null
 export TIMESTAMP=$(date +%H%M%S_%Y_%m_%d)
 
 export TAIGA_DB_CONTAINER=$(docker container ps | grep infra_taiga-db | awk '{print $1}')
-docker exec ${TAIGA_DB_CONTAINER} bash -c "pg_dump -c -U taiga taiga > /media/backup/${TIMESTAMP}_taiga-db-backup.sql"
+docker exec ${TAIGA_DB_CONTAINER} bash -c "pg_dump -Fc -U taiga taiga > /media/backup/${TIMESTAMP}_taiga-db-backup.sql"
 
 export TAIGA_BACK_CONTAINER=$(docker container ps | grep infra_taiga-back | awk '{print $1}')
 docker exec ${TAIGA_BACK_CONTAINER} bash -c "tar czf /media/backup/${TIMESTAMP}_taiga-media-backup.tar.gz media"

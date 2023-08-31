@@ -1,6 +1,6 @@
 # Creating a superuser
 
 ```bash
-$ vagrant ssh manager
-> $ docker exec -it e71c9bc3e61a python manage.py createsuperuser
+TAIGA_BACK=$(docker container ps | grep infra_taiga-back | awk '{print $1}')
+docker exec -it ${TAIGA_BACK} python manage.py createsuperuser
 ```
