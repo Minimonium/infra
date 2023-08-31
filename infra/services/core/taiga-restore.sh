@@ -9,7 +9,7 @@ docker service scale infra_taiga-async-rabbitmq=0
 docker service scale infra_taiga-events=0
 docker service scale infra_taiga-events-rabbitmq=0
 docker service scale infra_taiga-protected=0
-docker service scale infra_taiga-gateaway=0
+docker service scale infra_taiga-gateway=0
 
 docker service scale taiga-back=0
 docker exec infra_taiga-db bash -c "BACKUP_FILE=$(find /media/backup/*_taiga_backup.sql) && \
@@ -25,4 +25,4 @@ docker service scale infra_taiga-async-rabbitmq=1
 docker service scale infra_taiga-events=1
 docker service scale infra_taiga-events-rabbitmq=1
 docker service scale infra_taiga-protected=1
-docker service scale infra_taiga-gateaway=1
+docker service scale infra_taiga-gateway=1

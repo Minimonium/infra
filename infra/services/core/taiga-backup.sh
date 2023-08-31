@@ -10,7 +10,7 @@ docker service scale infra_taiga-async-rabbitmq=0
 docker service scale infra_taiga-events=0
 docker service scale infra_taiga-events-rabbitmq=0
 docker service scale infra_taiga-protected=0
-docker service scale infra_taiga-gateaway=0
+docker service scale infra_taiga-gateway=0
 
 export TIMESTAMP=$(date +%H%M%S_%Y_%m_%d)
 docker exec infra_taiga-db bash -c "pg_dump -U taiga taiga > /media/backup/${TIMESTAMP}_taiga-db-backup.sql"
@@ -21,4 +21,4 @@ docker service scale infra_taiga-async-rabbitmq=1
 docker service scale infra_taiga-events=1
 docker service scale infra_taiga-events-rabbitmq=1
 docker service scale infra_taiga-protected=1
-docker service scale infra_taiga-gateaway=1
+docker service scale infra_taiga-gateway=1
