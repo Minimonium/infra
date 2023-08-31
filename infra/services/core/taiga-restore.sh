@@ -13,12 +13,12 @@ docker service scale infra_taiga-gateway=0
 
 docker service scale infra_taiga-back=0
 export TAIGA_DB_CONTAINER=$(docker container ps | grep infra_taiga-db | awk '{print $1}')
-docker exec ${TAIGA_DB_CONTAINER} bash -c 'BACKUP_FILE=$(find /media/backup/*_taiga_backup.sql) && \
+docker exec ${TAIGA_DB_CONTAINER} bash -c 'BACKUP_FILE=$(find /media/backup/*_taiga-db-backup.sql) && \
     psql -U taiga taiga < ${BACKUP_FILE}'
 
 docker service scale infra_taiga-back=1
 export TAIGA_BACK_CONTAINER=$(docker container ps | grep infra_taiga-back | awk '{print $1}')
-docker exec ${TAIGA_BACK_CONTAINER} bash -c 'BACKUP_FILE=$(find /media/backup/*_taiga_backup.tar.gz) && \
+docker exec ${TAIGA_BACK_CONTAINER} bash -c 'BACKUP_FILE=$(find /media/backup/*_taiga-media-backup.tar.gz) && \
     tar -xzvf ${BACKUP_FILE} -C /taiga-back/media --strip 1 && \
     chown -R taiga:taiga /taiga-back/media'
 
