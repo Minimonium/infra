@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "infra: Restoring..."
+echo "infra: Restoring Gitlab..."
 
 export INFRA_DIR=/opt/infra/services/core
 

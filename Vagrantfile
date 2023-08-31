@@ -132,15 +132,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         manager.vm.provision "core-install", core_provision.merge({
             :path => "infra/services/core/install.sh"
         })
-        manager.vm.provision "core-restore", core_provision.merge({
-            :path => "infra/services/core/restore.sh",
-            :run => "never"
-        })
         manager.vm.provision "core", core_provision.merge({
             :path => "infra/services/core/run.sh"
         })
+        manager.vm.provision "gitlab-backup", core_provision.merge({
+            :path => "infra/services/core/gitlab-backup.sh",
+            :run => "never"
+        })
+        manager.vm.provision "taiga-backup", core_provision.merge({
+            :path => "infra/services/core/taiga-backup.sh",
+            :run => "never"
+        })
         manager.vm.provision "core-backup", core_provision.merge({
             :path => "infra/services/core/backup.sh",
+            :run => "never"
+        })
+        manager.vm.provision "gitlab-restore", core_provision.merge({
+            :path => "infra/services/core/gitlab-restore.sh",
+            :run => "never"
+        })
+        manager.vm.provision "taiga-restore", core_provision.merge({
+            :path => "infra/services/core/taiga-restore.sh",
             :run => "never"
         })
 
