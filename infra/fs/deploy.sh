@@ -8,6 +8,8 @@ mkdir -p /srv/infra/windows && \
 mkdir -p /srv/infra/dns/logs && \
 mkdir -p /srv/infra/traefik/logs && \
 mkdir -p /srv/infra/taiga/{backup,static,media,db,rabbitmq-async,rabbitmq-events} && \
+(cp -r /vagrant/backup/*taiga-db-backup.sql /srv/infra/taiga/backup | true) && \
+(cp -r /vagrant/backup/*taiga-media-backup.tar.gz /srv/infra/taiga/backup | true) && \
 mkdir -p /srv/infra/registry/data && \
 mkdir -p /srv/infra/pypi/packages && \
 mkdir -p /srv/infra/portainer/data && \
