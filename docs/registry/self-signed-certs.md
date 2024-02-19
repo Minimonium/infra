@@ -14,7 +14,7 @@ openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout infra.key -out infra.c
 
 * Copy the certificates to the `infra/services/core/config/certs/`.
 
-* Run `vagrant provision --provision-with=core-deploy,core`.
+* Run `vagrant provision --provision-with=core-install,core`.
 
 ## Manual Usage
 
