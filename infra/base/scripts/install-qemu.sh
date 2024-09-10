@@ -4,5 +4,5 @@
 #dpkg --add-architecture i386
 
 apt-get update
-apt-get install -y qemu-user-binfmt
+apt-get install -y qemu-user-static
 #apt-get install -y qemu-user-static:i386
