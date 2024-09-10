@@ -24,6 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             # NOTE: Generic boxes can't be used because we
             # need to setup private_network out of the box
             override.vm.box = "debian/bookworm64"
+            override.vm.boot_timeout = 600
             override.disksize.size = '100GB'
             override.vm.provision "shell", privileged: true, inline: <<-EOC
                 apt update
