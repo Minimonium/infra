@@ -1,0 +1,5 @@
+configVersion: 1
+
+shared:
+  database:
+    allowNonPostgresql: true

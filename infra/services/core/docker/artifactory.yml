@@ -6,6 +6,7 @@ services:
     volumes:
       - artifactory_data:/var/opt/jfrog/artifactory
       - artifactory_storage:/media
+      - ${INFRA_DIR}/config/artifactory/system.yaml:/opt/jfrog/artifactory/var/etc/system.yaml
     #  - ${INFRA_DIR}/config/binarystore.xml:/etc/artifactory/binarystore.xml
     # configs:
     #   - source: "artifactory.config.xml"
