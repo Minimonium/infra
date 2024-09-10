@@ -9,7 +9,7 @@ Project to try out different local infrastructure options
 ### Plugins
 
 ```bash
-vagrant plugin install vagrant-disksize
+vagrant plugin install --plugin-clean-sources --plugin-source https://rubygems.org vagrant-disksize
 ```
 
 ### Configuration
