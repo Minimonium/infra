@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         manager.vm.provider "virtualbox" do |vb, override|
             # NOTE: Generic boxes can't be used because we
             # need to setup private_network out of the box
-            override.vm.box = "debian/buster64"
+            override.vm.box = "debian/bookworm64"
             override.disksize.size = '100GB'
             override.vm.provision "shell", privileged: true, inline: <<-EOC
                 apt update
