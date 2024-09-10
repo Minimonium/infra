@@ -6,18 +6,10 @@ services:
     volumes:
       - artifactory_data:/var/opt/jfrog/artifactory
       - artifactory_storage:/media
-    #  - ${INFRA_DIR}/config/artifactory/system.yaml:/opt/jfrog/artifactory/var/etc/system.yaml
-    #  - ${INFRA_DIR}/config/binarystore.xml:/etc/artifactory/binarystore.xml
     configs:
       - source: "artifactory-system.yaml"
         target: "/var/opt/jfrog/artifactory/var/etc/system.yaml"
         mode: 777
-    #   - source: "artifactory.config.xml"
-    #     target: "/var/opt/jfrog/artifactory/etc/artifactory.config.xml"
-    #     mode: 777
-    #   - source: "binarystore.xml"
-    #     target: "/var/opt/jfrog/artifactory/etc/binarystore.xml"
-    #     mode: 777
     networks:
       - infra_network
     deploy:
@@ -49,7 +41,3 @@ volumes:
 configs:
   artifactory-system.yaml:
     file: "${INFRA_DIR}/config/artifactory/system.yaml"
-#   binarystore.xml:
-#     file: "${INFRA_DIR}/config/binarystore.xml"
-#   artifactory.config.xml:
-#     file: "${INFRA_DIR}/config/artifactory.config.xml"
