@@ -14,7 +14,10 @@ openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout infra.key -out infra.c
 
 * Copy the certificates to the `infra/services/core/config/certs/`.
 
-* Run `vagrant provision --provision-with=core-install,core`.
+* Run `vagrant provision --provision-with=preconfigure,configure`
+* Run `vagrant provision --provision-with=core-install,core`
+* Enter virtual machine with `vagrant ssh`
+* Run `sudo systemctl restart docker.service`
 
 ## Manual Usage
 
